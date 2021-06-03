@@ -1,5 +1,5 @@
-#ifndef _H
-#define _H
+#ifndef JSONSTRING_H
+#define JSONSTRING_H_H
 
 #include <string>
 using std::string;
