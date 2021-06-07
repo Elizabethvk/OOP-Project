@@ -1,10 +1,12 @@
 #ifndef ICOMMAND_H
 #define ICOMMAND_H
 
-#include <vector>
-#include <string>
-using std::string; 
-using std::vector;
+#include "../JSONCheck/JSONCheck.hpp"
+
+// #include <vector>
+// #include <string>
+// using std::string; 
+// using std::vector;
 
 
 class ICommand {
@@ -13,11 +15,11 @@ private:
     vector <string> commArgs;
 
 public:
-    ICommand();
+    ICommand() = default;
     ICommand(const string& userCommand);
-    virtual ~ICommand();
+    virtual ~ICommand() = default;
 
-    virtual void executeCmmd();
+    virtual void executeCmmd(const JsonCheck& userFile);
     void setArgs(vector<string>& args);
 
     string& getCommand();
