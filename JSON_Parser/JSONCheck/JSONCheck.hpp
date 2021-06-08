@@ -20,6 +20,7 @@ private:
     bool isItWhitespace(const char& checkSymbol) const;
     bool isItDigit(const char& checkSymbol) const;
     bool isItKeyWord(stringstream& fileStream, char symbolObjType);
+    bool inputLiteral(stringstream& fileStream, const string& str);
 
     bool isItOperation(const char& ch) const;
     char whichOperation(const char& ch);

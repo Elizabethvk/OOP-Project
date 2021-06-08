@@ -7,6 +7,10 @@
 
 string JsonCheck::inputString(stringstream& fileStream) {
     char checkSymbol = fileStream.get();
+    
+    if (fileStream.get() != '\"'){
+        throw std::runtime_error("Keys and values start with \'\"\' ");
+    }
     // vector<char> key;
     string key;
     while (checkSymbol != '\"') {
@@ -77,6 +81,10 @@ bool JsonCheck::isItKeyWord(stringstream& fileStream, char symbolObjType) {
     return isRight;
 }
 
+bool JsonCheck::inputLiteral(stringstream& fileStream, const string& str) {
+
+}
+
 bool JsonCheck::isItOperation(const char& ch) const {
     return ch == '+' || ch == '-';
 }
@@ -91,7 +99,14 @@ char JsonCheck::whichOperation(const char& ch) {
 JsonArray* JsonCheck::inputArray(stringstream& fileStream) {
     char checkSymbol = fileStream.get();
 
+    if (checkSymbol != '[') {
+        throw std::runtime_error("Arrays start with \'[\'");
+    }
+
+    checkSymbol = inputWhitespace(fileStream);
+
     if (checkSymbol == ']') {
+        fileStream.get();
         return new JsonArray;
     }
 
