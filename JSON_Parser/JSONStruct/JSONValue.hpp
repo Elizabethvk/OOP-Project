@@ -18,6 +18,7 @@ private:
 //
 public:
     virtual void print() const = 0;
+    // friend std::istream& operator<<(std::istream& out, JsonValue sample);
 };
 
 #endif

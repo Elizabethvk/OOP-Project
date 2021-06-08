@@ -12,7 +12,10 @@ string JsonCheck::inputString(stringstream& fileStream) {
     while (checkSymbol != '\"') {
         key += checkSymbol;
         checkSymbol = fileStream.get();
+        // cout << "# " << key << " ";
     }
+
+    // cout << endl;
 
     return key;
 }
@@ -23,7 +26,7 @@ char JsonCheck::inputWhitespace(stringstream& fileStream) {
     while (allWhitespace.find(checkSymbol) != string::npos) {
         checkSymbol = fileStream.get();
     }
-
+    // TODO will it stay the same
     return checkSymbol;
 }
 
@@ -74,6 +77,17 @@ bool JsonCheck::isItKeyWord(stringstream& fileStream, char symbolObjType) {
     return isRight;
 }
 
+bool JsonCheck::isItOperation(const char& ch) const {
+    return ch == '+' || ch == '-';
+}
+
+char JsonCheck::whichOperation(const char& ch) {
+    if (isItOperation(ch)) {
+        return ch == '+' ? '+' : '-';
+    }
+    // Todo:What if not?
+}
+
 JsonArray* JsonCheck::inputArray(stringstream& fileStream) {
     char checkSymbol = fileStream.get();
 
@@ -86,22 +100,23 @@ JsonArray* JsonCheck::inputArray(stringstream& fileStream) {
     if (checkSymbol == ' ') {
         checkSymbol = inputWhitespace(fileStream);
     }
-    else {
-        do {
-            if (checkSymbol == ',') {
-                checkSymbol = inputWhitespace(fileStream);
-            }
-            valuesArray.push_back(inputValue(fileStream, checkSymbol));
-            checkSymbol = fileStream.get();
-        } while (checkSymbol == ',');
 
-        if (isItWhitespace(checkSymbol)) {
+    do {
+        if (checkSymbol == ',') {
             checkSymbol = inputWhitespace(fileStream);
         }
-        
-        if (checkSymbol != ']') {
-            throw std::runtime_error("The array should be closed with \']\'");
-        }
+
+        valuesArray.push_back(inputValue(fileStream, checkSymbol));
+        checkSymbol = fileStream.get();
+
+    } while (checkSymbol == ',');
+
+    if (isItWhitespace(checkSymbol)) {
+        checkSymbol = inputWhitespace(fileStream);
+    }
+    
+    if (checkSymbol != ']') {
+        throw std::runtime_error("The array should be closed with \']\'");
     }
 
     return new JsonArray(valuesArray);
@@ -136,6 +151,13 @@ JsonValue* JsonCheck::inputValue(stringstream& fileStream, char symbolObjType) {
             return nullptr;
         }
         break;
+    case 'e':
+        break;
+    case 'E':
+        break;
+    case '-':
+        symbolObjType = fileStream.get();
+        return inputNumber(fileStream, symbolObjType);
     default:
         if (isItDigit(symbolObjType)) {
             number = (double)symbolObjType - '0';
@@ -150,7 +172,7 @@ JsonValue* JsonCheck::inputValue(stringstream& fileStream, char symbolObjType) {
 
 JsonObject* JsonCheck::inputObject (stringstream& fileStream) {
     checkSymbol = inputWhitespace(fileStream);
-            cout << "#" << checkSymbol << " ";
+            // cout << "#" << checkSymbol << " ";
     
     // if (checkSymbol != '{') {
     //     throw std::runtime_error("It should start with '{'");
@@ -161,7 +183,7 @@ JsonObject* JsonCheck::inputObject (stringstream& fileStream) {
 
 
     if (checkSymbol == '\"') {
-            cout << "#" << checkSymbol << " ";
+            // cout << "#" << checkSymbol << " ";
 
         string key, value;
         
@@ -180,19 +202,32 @@ JsonObject* JsonCheck::inputObject (stringstream& fileStream) {
                 throw std::runtime_error("Expected a : between the key and its value!");
             }
             
-                checkSymbol = inputWhitespace(fileStream);
-                userValues.push_back(inputValue(fileStream, checkSymbol));
-                userKeys.push_back(key);
-                checkSymbol = fileStream.get();
-            cout << "#" << checkSymbol << " ";
+            checkSymbol = inputWhitespace(fileStream);
+
+            userValues.push_back(inputValue(fileStream, checkSymbol));
+            userKeys.push_back(key);
+            checkSymbol = fileStream.get();
+            // cout << "#" << checkSymbol << " ";
         } while (checkSymbol == ',');
 
-        if (checkSymbol != '}') {
-            throw std::runtime_error("Expected a '}' as a closing character of an object!");           
+        if (isItWhitespace(checkSymbol)) {
+            checkSymbol = inputWhitespace(fileStream);
         }
 
     }
-        return new JsonObject(userKeys, userValues);
+
+    if (checkSymbol != '}') {
+        throw std::runtime_error("Expected a '}' as a closing character of an object!");           
+    }
+
+    return new JsonObject(userKeys, userValues);
+}
+
+JsonValue* JsonCheck::inputNumber(stringstream& fileStream, char symbolObjType) {
+    if (isItDigit(symbolObjType)) {
+        double num = getNumber(fileStream, symbolObjType);
+        return new JsonNumber(num);
+    }
 }
 
 JsonValue* JsonCheck::inputJson (stringstream& fileStream) {
@@ -208,6 +243,77 @@ JsonValue* JsonCheck::inputJson (stringstream& fileStream) {
         throw std::runtime_error("Non-valid json object found!");
         break;
     }
+}
+
+double JsonCheck::getNumber (stringstream& fileStream, char& ch) {
+    stringstream getNumberStream;
+
+    if (!isItDigit(ch) && isItOperation(ch)) {
+        ch = fileStream.get();
+        // TODO: throws, -'ses ...?
+    }
+
+    if (isItOperation(ch) || !isItDigit(ch)) {
+        throw std::runtime_error("Too many operations e.g. ++/--");
+    }
+
+    do {
+        if (ch == '.') {
+            getNumberStream << ch;
+            ch = fileStream.get();
+            if (!isItDigit(ch)) {
+                throw std::runtime_error("After '.' there should be one or more numbers!");
+            }
+            getNumberStream << ch;
+            ch = fileStream.get();
+            continue;
+        }
+
+        getNumberStream << ch;
+        ch = fileStream.get();
+    } while (isItDigit(ch) || ch == '.');
+
+    if (ch != ',') {
+        throw std::runtime_error("There must be ',' at the end!");
+    }
+
+    ch = fileStream.get();
+
+    if (!isItWhitespace(ch)) {
+        //TODO message
+        throw std::runtime_error("");
+    }
+
+    inputWhitespace(fileStream);
+    double number = 0;
+    getNumberStream >> number;
+    return number;
+
+
+}
+
+double JsonCheck::getNumberE (stringstream& fileStream, char& ch) {
+    double numE = 2.72;
+
+    if (ch != 'e'){
+        throw std::runtime_error("Missing 'e' in the number!");
+    }
+
+    ch = fileStream.get();
+
+    if(!isItOperation(ch) && isItDigit(ch)){
+        double numWithE = getNumber(fileStream, ch);
+        return numWithE * numE;
+    }
+    else if (!isItOperation(ch) && !isItDigit(ch)) {
+        throw std::runtime_error("Missing an operation after an 'e'!");
+    }
+
+    char operation = whichOperation(ch);
+
+    double temp = getNumber(fileStream, ch);
+
+    return operation == '+' ? numE + temp : numE - temp;
 }
 
 void JsonCheck::checkJsonFile() {

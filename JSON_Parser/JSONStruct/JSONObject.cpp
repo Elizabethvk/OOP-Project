@@ -18,8 +18,22 @@ void JsonObject::print() const{
     unsigned int sizeVect = keys.size();
     
     for (unsigned int i = 0; i < sizeVect; ++i ) {
-        cout << "\"" << keys[i] << " :" << values[i];
+        cout << "\"" << keys[i] << "\": \"" << "\"" << values[i] << "\"" << endl;
     }
 
     cout << "}" << endl;
 }
+
+/*
+void JsonObject::print() const{
+    cout << "{" << endl;
+    unsigned int sizeVect = keys.size();
+    
+    for (unsigned int i = 0; i < sizeVect; ++i ) {
+        cout << "\"" << keys[i] << "\": \"" << "\"" << *values[i] << "\"";
+    }
+
+    cout << endl << "}" << endl;
+}
+
+*/

@@ -21,14 +21,20 @@ private:
     bool isItDigit(const char& checkSymbol) const;
     bool isItKeyWord(stringstream& fileStream, char symbolObjType);
 
+    bool isItOperation(const char& ch) const;
+    char whichOperation(const char& ch);
+
     JsonArray* inputArray(stringstream& fileStream);
     JsonValue* inputValue(stringstream& fileStream, char symbolObjType);
     JsonObject* inputObject(stringstream& fileStream);
+    JsonValue* inputNumber(stringstream& fileStream, char symbolObjType);
 
 public:
     JsonCheck() = default;
     JsonValue* inputJson(stringstream& fileStream);
 
+    double getNumber (stringstream& fileStream, char& ch);
+    double getNumberE (stringstream& fileStream, char& ch);
     void checkJsonFile();
 
 };
