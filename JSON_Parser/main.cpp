@@ -2,17 +2,27 @@
 
 int main() {
     JsonCheck testClass;
-    string testStr = "{\"menu\": {\
-                        \"id\": \"file\",\
-                        \"value\": \"File\",\
-                        \"popup\": {\
-                            \"menuitem\": [\
-                            {\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"},\
-                            {\"value\": \"Open\", \"onclick\": \"OpenDoc()\"},\
-                            {\"value\": \"Close\", \"onclick\": \"CloseDoc()\"}\
-                            ]\
-                        }\
-                        }}";
+    // string testStr = "{\"menu\": {\
+    //                     \"id\": \"file\",\
+    //                     \"value\": \"File\",\
+    //                     \"popup\": {\
+    //                         \"menuitem\": [\
+    //                         {\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"},\
+    //                         {\"value\": \"Open\", \"onclick\": \"OpenDoc()\"},\
+    //                         {\"value\": \"Close\", \"onclick\": \"CloseDoc()\"}\
+    //                         ]\
+    //                     }\
+    //                     }}";
+
+    string testStr = "{\n"
+                        "    \"id\": \"okdok\",\n"
+                        "    \"name\": \"Foo\",\n"
+                        "    \"tags\": [ \"Fighters\", \"Five\" ],\n"
+                        "    \"type\": {\n"
+                        "        \"rock\": \"100\",\n"
+                        "        \"roll\": \"30\"\n"
+                        "    }\n"
+                        "}";
 
     stringstream ss;
 
@@ -22,7 +32,7 @@ int main() {
     {
         testClass.inputJson(ss)->print();
     }
-    catch(std::exception& e)
+    catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
     }
