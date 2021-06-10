@@ -13,7 +13,10 @@ private:
 public:
     JsonString(const string& userValue);
 
-    string getValue() const;
+    void keySearch(const string& key) const;
+
+    void printValue() const;
+    // string getValue() const;
     void print() const;
 };
 

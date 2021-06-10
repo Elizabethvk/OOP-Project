@@ -11,6 +11,10 @@ public:
     JsonNumber(const double& number);
     double getNumber() const;
 
+    void keySearch(const string& key) const;
+
+    void printValue() const;
+
     void print() const;
 
 

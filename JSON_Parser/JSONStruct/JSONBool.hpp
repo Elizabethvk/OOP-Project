@@ -11,6 +11,12 @@ public:
     JsonBool(const bool& value);
     bool getValue() const;
     
+
+    void keySearch(const string& key) const;
+
+    void printValue() const;
+
+
     void print() const;
 };
 
