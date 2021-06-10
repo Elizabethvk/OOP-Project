@@ -1,11 +1,11 @@
-#ifndef 
-#define 
+#ifndef VALIDATE_H
+#define VALIDATE_H
 
 #include "ICommand.hpp"
 
-class Command : public ICommand {
+class CommandValidate : public ICommand {
 private:
-    Command();
+    CommandValidate();
     
     void executeCmmd(JsonCheck& userFile);
 };

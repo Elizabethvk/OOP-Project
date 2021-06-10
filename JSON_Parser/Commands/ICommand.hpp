@@ -1,6 +1,9 @@
 #ifndef ICOMMAND_H
 #define ICOMMAND_H
 
+#include <cassert>
+#define NDEBUG
+
 #include "../JSONCheck/JSONCheck.hpp"
 
 // #include <vector>
@@ -10,7 +13,7 @@
 
 
 class ICommand {
-private:
+protected:
     string command;
     vector <string> commArgs;
 
@@ -19,7 +22,7 @@ public:
     ICommand(const string& userCommand);
     virtual ~ICommand() = default;
 
-    virtual void executeCmmd(const JsonCheck& userFile);
+    virtual void executeCmmd( JsonCheck& userFile);
     void setArgs(vector<string>& args);
 
     string& getCommand();
