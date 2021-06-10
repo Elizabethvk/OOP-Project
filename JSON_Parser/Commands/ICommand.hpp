@@ -28,8 +28,6 @@ public:
     string& getCommand();
 
 
-
-
 };
 
 
