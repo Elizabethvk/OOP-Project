@@ -6,11 +6,9 @@
 #include "../JSONStruct/JSONArray.hpp"
 #include "../JSONStruct/JSONObject.hpp"
 
-#include <fstream>
 #include <sstream>
 using std::stringstream;
-using std::ifstream;
-using std::ofstream;
+
 
 class JsonCheck {
 private:

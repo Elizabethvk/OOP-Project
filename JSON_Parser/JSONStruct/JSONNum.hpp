@@ -8,7 +8,18 @@ private:
     double number;
 
 public:
-    JsonNumber(const double& number);
+    JsonNumber();
+
+    explicit JsonNumber(const double& number);
+
+    Type getType()const;
+
+    void edit(const double& number);
+
+    double getJsonNumber() const;
+
+    void save(ofstream& userFile) const; 
+
     double getNumber() const;
 
     void keySearch(const string& key) const;

@@ -14,11 +14,28 @@ using std::vector;
 
 #include <cmath>
 
+#include <fstream>
+using std::ifstream;
+using std::ofstream;
+
+#include "enumTypes.hpp"
 
 class JsonValue {
 private:
 //
+protected:
+    Type type;
 public:
+    virtual void save(ofstream& userFile) const = 0; 
+
+    virtual string getJsonStringValue() const;
+
+    virtual bool getJsonBool() const;
+
+    virtual double getJsonNumber() const;
+
+    virtual Type getType() const = 0;
+
     virtual void keySearch(const string& key) const = 0;
 
     virtual void printValue() const = 0;

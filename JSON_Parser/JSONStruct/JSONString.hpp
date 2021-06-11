@@ -1,9 +1,6 @@
 #ifndef JSONSTRING_H
 #define JSONSTRING_H_H
 
-#include <string>
-using std::string;
-
 #include "JSONValue.hpp"
 
 class JsonString : public JsonValue {
@@ -11,7 +8,23 @@ private:
     string value;
 
 public:
-    JsonString(const string& userValue);
+    void save(ofstream& userFile) const; 
+
+    string getJsonStringValue() const;
+
+    bool getJsonBool() const;
+
+    double getJsonNumber() const;
+
+    Type getType() const;
+
+    void edit(const string& str);
+
+    void keySearch(const string& key) const;
+
+    JsonString();
+
+    explicit JsonString(const string& userValue);
 
     void keySearch(const string& key) const;
 
