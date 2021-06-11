@@ -8,30 +8,44 @@ JsonCheck::JsonCheck(const string& fileInfo)
 {
 }
 
-stringstream JsonCheck::openFile() {
-    stringstream fileStream;
+void JsonCheck::openFile(const string& filePath) {
     string eachLine;
 
     ifstream file;
-    file.open(fileName, std::ios::in);
+    file.open(filePath, std::ios::in);
 
     if (!file.is_open()) {
+        // couldnt open file with this name
         // throw std::
         // TODO custom except
+        isJsonLoaded = false;
+        cout << "Creating new empty file with name: " << filePath << endl;
+        ofstream openNewFile;
+        openNewFile.open(filePath, std::ios::out);
+
+        if (!openNewFile.is_open()) {
+            isJsonLoaded = false;
+            throw std::runtime_error("Error creating new file! Please reopen the program!");
+        }
+        openNewFile.close();
+        return;
     }
     else {
+        fileName = filePath;
+
         while (getline(file, eachLine)) {
             fileStream << eachLine;
         }
 
+        isJsonLoaded = true;
+        cout << "The file data is loaded and ready to be used!" << endl;
         file.close();
     }
 
-    return fileStream;
 }
 
 JsonValue* JsonCheck::openCreate() {
-    stringstream fileStream = openFile();
+    openFile(fileName);
     return inputJson(fileStream);
 }
 
@@ -124,8 +138,8 @@ string JsonCheck::inputString(stringstream& fileStream, char checkSymbol) {
         // cout << "#str: " << key << " ";
     }
 
-    cout << endl;
-     cout << key << endl;
+    // cout << endl;
+    // cout << key << endl;
     return key;
 }
 
@@ -495,9 +509,43 @@ double JsonCheck::getNumberE (stringstream& fileStream, char& ch) {
     // return operation == '+' ? numE + temp : numE - temp;
 }
 
-bool JsonCheck::checkJsonFile() {
-    stringstream fileStream = openFile();
+void JsonCheck::help() {
+        cout << "You can choose from the following commands:" << endl;
+    cout << "------------------------------------------------------" << endl;
+    cout << "↓ To open a file ↓" << endl;
+        cout << "\t> open <file>" << endl;
+    cout << "↓ To close the file ↓" << endl;
+        cout << "\t> close" << endl;
+    cout << "↓ To save currently opened file ↓" << endl;
+        cout << "\t> save" << endl;
+    cout << "↓ To save currently opened file with in <file> ↓" << endl;
+        cout << "\t> saveas <file>" << endl;
+    cout << "↓ To validate if the file is in a valid JSON format ↓" << endl;
+        cout << "\t> validate" << endl;
+    cout << "↓ To search the file by <key> ↓" << endl;
+        cout << "\t> search <key>" << endl;
+    cout << "↓ To change the value of <path> to <string> ↓" << endl;
+        cout << "\t> edit <path> <string>" << endl;
+    cout << "↓ To add a new json object by key <path> with value <string> ↓" << endl;
+        cout << "\t> create <path> <string>" << endl;
+    cout << "↓ To remove an element <path> ↓" << endl;
+        cout << "\t> remove <path>" << endl;
+    cout << "↓ To move an element from its place <from> to the place of another element <to> ↓" << endl;
+        cout << "\t> move <from> <to>" << endl;
+    cout << "↓ To print the file ↓" << endl;
+        cout << "\t> print" << endl;
+    cout << "↓ To see the available commands again ↓" << endl;
+        cout << "\t> help" << endl;
+    cout << "------------------------------------------------------" << endl;
 
+}
+
+
+bool JsonCheck::checkJsonFile() {
+    if (!isJsonLoaded) {
+        cout << "Json file haven't been loaded! Nothing to check!";
+        return false;
+    }
     try {
         inputJson(fileStream);
     }
@@ -510,14 +558,37 @@ bool JsonCheck::checkJsonFile() {
     return true;
 }
 
+void JsonCheck::closeFile() {
+    if (!isJsonLoaded) {
+        cout << "There isn't an open file to close!";
+        return;
+    }
+    
+    cout << "The file is closed successfully! File: " << fileName << endl;
+    fileName.clear();
+    fileStream.clear();
+    isJsonLoaded = false;
+}  
+
 void JsonCheck::searchInFile(const string& str) {
+    if (!isJsonLoaded) {
+        cout << "Json file haven't been opened! Nothing to search!";
+        return;
+    }
+
     JsonValue* jsonValue = openCreate();
     jsonValue->keySearch(str);
+    delete jsonValue;
     // TODO dynamic memory
 }
 
 void JsonCheck::print() {
-    JsonValue* jsonValue = openCreate();
+    if (!isJsonLoaded) {
+        cout << "Json file haven't been opened! Nothing to show!";
+        return;
+    }
+
+    JsonValue* jsonValue = inputJson(fileStream);
     jsonValue->print();
     delete jsonValue;
 }

@@ -14,13 +14,15 @@ using std::ofstream;
 
 class JsonCheck {
 private:
-    const string fileName;
+    string fileName;
     const string allWhitespace = " \n\r\t";
     char checkSymbol;
+    stringstream fileStream;
+    bool isJsonLoaded;
 
-    stringstream openFile();
     JsonValue* openCreate();
     
+private:
     char inputWhitespace(stringstream& fileStream);
     bool isItWhitespace(const char& checkSymbol) const;
     bool isItDigit(const char& checkSymbol) const;
@@ -41,9 +43,17 @@ private:
     // JsonBool* keyWords(stringstream& fileStream, char symbolObjType);
 
 public:
+    JsonCheck();
+
     JsonCheck(const string& fileInfo);
 
+    void help();
+
     bool checkJsonFile();
+
+    void openFile(const string& filePath);    
+
+    void closeFile();
 
     void searchInFile(const string& str);
 
