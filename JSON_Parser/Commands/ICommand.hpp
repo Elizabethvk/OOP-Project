@@ -22,7 +22,7 @@ public:
     ICommand(const string& userCommand);
     virtual ~ICommand() = default;
 
-    virtual void executeCmmd( JsonCheck& userFile);
+    virtual void runCommand( JsonCheck& userFile);
     void setArgs(vector<string>& args);
 
     string& getCommand();

@@ -4,6 +4,6 @@ CommandDelete::CommandDelete() {
     
 }
     
-void CommandDelete::executeCmmd(JsonCheck& userFile) {
+void CommandDelete::runCommand(JsonCheck& userFile) {
 
 }

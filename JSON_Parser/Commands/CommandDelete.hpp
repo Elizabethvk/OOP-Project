@@ -4,10 +4,10 @@
 #include "ICommand.hpp"
 
 class CommandDelete : public ICommand {
-private:
+public:
     CommandDelete();
     
-    void executeCmmd(JsonCheck& userFile);
+    void runCommand(JsonCheck& userFile);
 };
 
 #endif

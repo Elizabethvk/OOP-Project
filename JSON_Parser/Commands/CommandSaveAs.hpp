@@ -4,10 +4,10 @@
 #include "ICommand.hpp"
 
 class CommandSaveAs : public ICommand {
-private:
+public:
     CommandSaveAs();
     
-    void executeCmmd(JsonCheck& userFile);
+    void runCommand(JsonCheck& userFile);
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "CommandValidate.hpp" 
 
-void CommandValidate::executeCmmd(JsonCheck& userFile) {
+void CommandValidate::runCommand(JsonCheck& userFile) {
     assert(commArgs.empty());
     userFile.checkJsonFile();
 

@@ -4,10 +4,10 @@
 #include "ICommand.hpp"
 
 class CommandMove : public ICommand {
-private:
+public:
     CommandMove();
     
-    void executeCmmd(JsonCheck& userFile);
+    void runCommand(JsonCheck& userFile);
 };
 
 #endif

@@ -4,6 +4,6 @@ CommandMove::CommandMove() {
 
 }
 
-void CommandMove::executeCmmd(JsonCheck& userFile) {
+void CommandMove::runCommand(JsonCheck& userFile) {
     
 }

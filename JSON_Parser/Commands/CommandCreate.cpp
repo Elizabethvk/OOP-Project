@@ -4,6 +4,6 @@ CommandCreate::CommandCreate() {
 
 }
 
-void CommandCreate::executeCmmd(JsonCheck& userFile) {
+void CommandCreate::runCommand(JsonCheck& userFile) {
     
 }

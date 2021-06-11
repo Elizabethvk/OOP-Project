@@ -13,7 +13,7 @@ ICommand::ICommand(const string& userCommand)
 // {
 // }
 
-// void ICommand::executeCmmd() {
+// void ICommand::runCommand() {
 
 // }
 
