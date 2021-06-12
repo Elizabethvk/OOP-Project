@@ -2,7 +2,6 @@
 #include "JSONCheck/JSONCheck.hpp"
 
 int main() {
-    JsonCheck manager;
     Interaction starter;
     starter.start();
 
