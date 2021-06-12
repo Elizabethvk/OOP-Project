@@ -31,23 +31,32 @@ private:
 protected:
     Type type; //!< Holds the types of JSON values
 public:
-    virtual void save(ofstream& userFile) const = 0; 
-
-    virtual string getJsonStringValue() const;
-
-    virtual bool getJsonBool() const;
-
-    virtual double getJsonNumber() const;
-
+    //! Function getter - type
     virtual Type getType() const = 0;
 
-    virtual void keySearch(const string& key) const = 0;
+    //! Function getter - string value
+    virtual string getJsonStringValue() const;
 
+    //! Function getter - number
+    virtual double getJsonNumber() const;
+
+    //! Function getter - boolean
+    virtual bool getJsonBool() const;
+
+    //! Function searching in the file by given key
+    virtual void keySearch(const string& key) const;
+
+    //! Function to remove something by given key
     virtual void removeByKey(const string& key);
 
-    virtual void printValue() const = 0;
+    //! Printing just the value
+    virtual void printValue() const = 0; // TODO Do i need u
 
+    //! Printing values
     virtual void print() const = 0;
+
+    //! Saving into file
+    virtual void save(ofstream& userFile) const = 0; 
 };
 
 #endif

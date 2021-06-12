@@ -1,3 +1,8 @@
+/**
+ * \brief Class for the String variables in JSON Document
+ * \author Elizabet Velikova
+ */
+
 #ifndef JSONSTRING_H
 #define JSONSTRING_H_H
 
@@ -5,31 +10,28 @@
 
 class JsonString : public JsonValue {
 private:
-    string value;
+    string value; //!< Variable holding the value of the key
 
 public:
-    void save(ofstream& userFile) const; 
-
-    string getJsonStringValue() const;
-
-    bool getJsonBool() const;
-
-    double getJsonNumber() const;
-
-    Type getType() const;
-
-    void edit(const string& str);
-
-    void keySearch(const string& key) const;
-
+    //! Default constructor
     JsonString();
 
+    //! Constructor with already given value
     explicit JsonString(const string& userValue);
 
-    void keySearch(const string& key) const;
+    //! Function getting the type
+    Type getType() const;
+    
+    //! Function which saves to a file
+    void save(ofstream& userFile) const; 
 
-    void printValue() const;
-    // string getValue() const;
+    //! Getter for the string value
+    string getJsonStringValue() const;
+
+    //! Changing the value
+    void edit(const string& newValue);
+    
+    //! Printing the value
     void print() const;
 };
 
