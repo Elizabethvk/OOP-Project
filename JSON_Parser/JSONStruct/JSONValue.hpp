@@ -1,3 +1,8 @@
+/**
+ * \brief Abstract Class which holds pure virtual function and it is the base of all JSON Values
+ * \author Elizabet Velikova
+ */
+
 #ifndef JSONVALUE_H
 #define JSONVALUE_H
 
@@ -24,7 +29,7 @@ class JsonValue {
 private:
 //
 protected:
-    Type type;
+    Type type; //!< Holds the types of JSON values
 public:
     virtual void save(ofstream& userFile) const = 0; 
 
@@ -43,7 +48,6 @@ public:
     virtual void printValue() const = 0;
 
     virtual void print() const = 0;
-    // friend std::istream& operator<<(std::istream& out, JsonValue sample);
 };
 
 #endif
