@@ -1,6 +1,8 @@
 #ifndef JSONCHECK_H
 #define JSONCHECK_H
 
+#include "../ControlVariables/ControlVariables.hpp"
+
 #include "../JSONStruct/JSONValue.hpp"
 #include "../JSONStruct/JSONBool.hpp"
 #include "../JSONStruct/JSONArray.hpp"
@@ -17,35 +19,39 @@ private:
     char checkSymbol;
     stringstream fileStream;
     bool isJsonLoaded;
+    JsonObject* jsonFile;
 
     JsonValue* openCreate();
     
 private:
-    char inputWhitespace(stringstream& fileStream);
+    char inputWhitespace(stringstream& fileStream) const;
     bool isItWhitespace(const char& checkSymbol) const;
     bool isItDigit(const char& checkSymbol) const;
     bool isItOperation(const char& ch) const;
-    char whichOperation(const char& ch);
-    bool inputLiteral(stringstream& fileStream, const string& str);
+    char whichOperation(const char& ch) const;
+    bool inputLiteral(stringstream& fileStream, const string& str) const;
     // bool isItKeyWord(stringstream& fileStream, char symbolObjType);
-    double getNumber (stringstream& fileStream, char& ch);
-    double getNumberE (stringstream& fileStream, char& ch);
+    double getNumber (stringstream& fileStream, char& ch) const;
+    double getNumberE (stringstream& fileStream, char& ch) const;
 
+    void checkAnswer(int& answer);
+    int stringToInt(const string& str);
+    vector<ControlVariables> parsingCommand (const string& command);
 
-    string inputString(stringstream& fileStream, char checkSymbol);
-    JsonArray* inputArray(stringstream& fileStream);
-    JsonValue* inputValue(stringstream& fileStream, char symbolObjType);
-    JsonObject* inputObject(stringstream& fileStream, char checkSymbol);
-    JsonValue* inputNumber(stringstream& fileStream, char symbolObjType);
-    JsonValue* inputJson(stringstream& fileStream);
+    string inputString(stringstream& fileStream, char checkSymbol) const;
+    JsonArray* inputArray(stringstream& fileStream) const;
+    JsonValue* inputValue(stringstream& fileStream, char symbolObjType) const;
+    JsonObject* inputObject(stringstream& fileStream, char checkSymbol) const;
+    JsonValue* inputNumber(stringstream& fileStream, char symbolObjType) const;
+    JsonValue* inputJson(stringstream& fileStream) const;
     // JsonBool* keyWords(stringstream& fileStream, char symbolObjType);
 
 public:
     JsonCheck();
 
-    JsonCheck(const string& fileInfo);
+    // JsonCheck(const string& fileInfo);
 
-    void help();
+    void help() const;
 
     bool checkJsonFile();
 
@@ -53,9 +59,21 @@ public:
 
     void closeFile();
 
-    void searchInFile(const string& str);
+    void saveFile();
 
-    void print();
+    void saveAsFile(const string& newFileName);
+
+    void create (const string& str, stringstream& fileStream);
+
+    void edit (const string& str, stringstream& fileStream);
+
+    void terminateFunction();
+
+    void removeByPath(const string& key);
+
+    void searchInFile(const string& str) const;
+
+    void print() const; // Check todo
 
 };
 

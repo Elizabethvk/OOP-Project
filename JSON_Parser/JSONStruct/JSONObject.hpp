@@ -12,7 +12,7 @@ private:
     vector<string> keys;
     vector<JsonValue*> values;
 
-    void addSpace(const unsigned int n) const;
+    string addSpace(const unsigned int n) const;
 
 public:
     JsonObject();
@@ -38,6 +38,10 @@ public:
     // vector<JsonValue*> getJsonValues() const;
 
     // int isItValue(const string& name) const;
+
+    void removeByKey(const string& key);
+
+    void insertNewValue(const string& key, const JsonValue* value);
 
     void keySearch(const string& key) const;
 

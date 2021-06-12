@@ -2,11 +2,13 @@
 
 JsonArray::JsonArray() 
 {
+    type = JSONARRAY;
 }
 
 JsonArray::JsonArray(const vector<JsonValue*>& values) 
     : values(values)
 {
+    type = JSONARRAY;
 }
 
 vector<JsonValue*> JsonArray::getValues() const {
@@ -14,12 +16,45 @@ vector<JsonValue*> JsonArray::getValues() const {
 }
 
 
+Type JsonArray::getType() const {
+    return type;
+}
+
+void JsonArray::edit(const int& valueNr, JsonValue* value) {
+    unsigned int sizeArr = values.size();
+    for (unsigned int i = 0; i < sizeArr; ++i) {
+        if (i == valueNr) {
+            values[i] = value;
+        }
+    }
+} 
+
+void JsonArray::save(ofstream& userFile) {
+    // printValue(userFile);
+
+    userFile << "[ ";
+
+    unsigned int sizeArr = values.size();
+    for (unsigned int i = 0; i < sizeArr; ++i) {
+        values[i]->save(userFile);
+        if (i <= values.size()-2) {
+            userFile << ", ";
+        }
+    }
+
+
+    // printArrElements();
+
+    userFile << " ]";
+} //TODO fix print const n stuff
+
 void JsonArray::keySearch(const string& key) const {
 
 }
 
 void JsonArray::printArrElements() const {
-    for (unsigned int i = 0; i < values.size(); ++i) {
+    unsigned int sizeArr = values.size();
+    for (unsigned int i = 0; i < sizeArr; ++i) {
         values[i]->printValue();
         if (i <= values.size()-2) {
             cout << ", ";
@@ -27,12 +62,21 @@ void JsonArray::printArrElements() const {
     }
 }
 
-void JsonArray::printValue() const {
-    cout << "[ ";
+void JsonArray::printValue(std::ostream& out) {
+    out << "[ ";
 
-    printArrElements();
+    unsigned int sizeArr = values.size();
+    for (unsigned int i = 0; i < sizeArr; ++i) {
+        values[i]->save(out);
+        if (i <= values.size()-2) {
+            out << ", ";
+        }
+    }
 
-    cout << " ]";
+
+    // printArrElements();
+
+    out << " ]";
     // cout << endl;
 
     // vector<JsonValue*>::iterator itValues;
@@ -41,10 +85,19 @@ void JsonArray::printValue() const {
 
 }
 
-void JsonArray::print() const {
+void JsonArray::print() {
+    // printValue(cout);
     cout << "[" << endl;
-    
-    printArrElements();
+    unsigned int sizeArr = values.size();
+    for (unsigned int i = 0; i < sizeArr; ++i) {
+        values[i]->print();
+        if (i <= sizeArr-2) {
+            cout << ", ";
+        }
+    }
+
+
+    // // printArrElements();
 
     cout << "]" << endl;
 }

@@ -1,9 +1,13 @@
 #include "JSONObject.hpp"
 
-void JsonObject::addSpace(const unsigned int n) const {
+string JsonObject::addSpace(const unsigned int n) const {
+    string space;
+    
     for(unsigned int i = 0; i < n; ++i) {
-        cout << " ";
+        space.push_back(' ');
     }
+
+    return space;
 }
 
 JsonObject::JsonObject() {
@@ -99,7 +103,8 @@ void JsonObject::keySearch(const string& str) const {
 
     for (unsigned int i = 0; i < keys.size(); ++i) {
         if (str == keys[i]) {
-            // foundAt = i;
+            foundAt = i;
+            cout << "The value of the key is ";
             values[i]->print();
             return;
         }
@@ -108,6 +113,11 @@ void JsonObject::keySearch(const string& str) const {
             break;
         }
 
+    }
+
+    if (foundAt == -1) {
+        cout << "Couldn't find this key: " << str << endl;
+        return;
     }
 
     // if (foundAt != -1) {
@@ -134,7 +144,7 @@ void JsonObject::keySearch(const string& str) const {
 // }
 
 void JsonObject::save(ofstream& userFile) const {
-    printValue(userFile);
+    printValue(userFilje);
 }
 
 void JsonObject::printValue(std::ostream& out) const {
@@ -142,7 +152,8 @@ void JsonObject::printValue(std::ostream& out) const {
 
     unsigned int sizeVect = keys.size();
     for (unsigned int i = 0; i < sizeVect; ++i ) {
-        addSpace(SPACE_TO_PRINT);
+        // addSpace(SPACE_TO_PRINT);
+        cout << addSpace(SPACE_TO_PRINT);
 
         cout << " \"" << keys[i] << "\": \" ";
         values[i]->printValue();
@@ -152,7 +163,7 @@ void JsonObject::printValue(std::ostream& out) const {
     }
 
     cout << endl;
-    addSpace(SPACE_TO_PRINT);
+    cout << addSpace(SPACE_TO_PRINT);
     cout << "}" << endl;
 }
 

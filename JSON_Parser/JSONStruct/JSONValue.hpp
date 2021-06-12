@@ -38,6 +38,8 @@ public:
 
     virtual void keySearch(const string& key) const = 0;
 
+    virtual void removeByKey(const string& key);
+
     virtual void printValue() const = 0;
 
     virtual void print() const = 0;

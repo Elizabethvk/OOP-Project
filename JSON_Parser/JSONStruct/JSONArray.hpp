@@ -8,20 +8,29 @@
 class JsonArray : public JsonValue {
 private:
     vector<JsonValue*> values;
+
 public:
     JsonArray();
-    JsonArray(const vector<JsonValue*>& values);
+    
+    explicit JsonArray(const vector<JsonValue*>& values);
     
     vector<JsonValue*> getValues() const;
 
+    Type getType() const;
+
+    void edit(const int& valueNrconst, JsonValue* value); 
+    
+    // void edit(const int& valueNrconst, JsonValue* value); 
+
+    void save(ofstream& userFile) ; 
 
     void keySearch(const string& key) const;
 
     void printArrElements() const;
 
-    void printValue() const;
+    void printValue(std::ostream& out);
 
-    void print() const;
+    void print();
 };
 
 #endif
