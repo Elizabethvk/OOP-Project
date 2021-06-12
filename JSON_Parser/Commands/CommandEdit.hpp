@@ -3,9 +3,9 @@
 
 #include "ICommand.hpp"
 
-class CommandSet : public ICommand {
+class CommandEdit : public ICommand {
 public:
-    CommandSet();
+    CommandEdit();
     
     void runCommand(JsonCheck& userFile);
 };

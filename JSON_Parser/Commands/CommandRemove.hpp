@@ -3,9 +3,9 @@
 
 #include "ICommand.hpp"
 
-class CommandDelete : public ICommand {
+class CommandRemove : public ICommand {
 public:
-    CommandDelete();
+    CommandRemove();
     
     void runCommand(JsonCheck& userFile);
 };

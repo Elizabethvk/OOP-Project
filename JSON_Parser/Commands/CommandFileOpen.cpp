@@ -1,6 +1,5 @@
 #include "CommandFileOpen.hpp"
          
-
 CommandFileOpen::CommandFileOpen() 
     : ICommand("open")
 {    
