@@ -8,7 +8,7 @@ CommandPrint::CommandPrint()
 }
 
 void CommandPrint::runCommand(JsonCheck& userFile) {
-    assert(commArgs.empty());
+   // assert(commArgs.empty());
     
     userFile.print();
 }

@@ -9,7 +9,11 @@ CommandRemove::CommandRemove()
     
 
 void CommandRemove::runCommand(JsonCheck& userFile) {
-    assert(commArgs.size() == 1);
+    if (commArgs.empty()) {
+        cout << "No parameters found." << endl;
+        return;
+    }
+   // assert(commArgs.size() == 1);
 
     userFile.removeByPath(commArgs[0]);
 }

@@ -7,7 +7,11 @@ CommandSaveAs::CommandSaveAs()
 }
 
 void CommandSaveAs::runCommand(JsonCheck& userFile) {
-    assert(commArgs.size() == 1);
+    if (commArgs.empty()) {
+        cout << "No parameters found." << endl;
+        return;
+    }
+   // assert(commArgs.size() == 1);
     
     userFile.saveAsFile(commArgs[0]);
 }

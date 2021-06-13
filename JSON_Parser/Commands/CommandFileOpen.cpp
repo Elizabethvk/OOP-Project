@@ -6,7 +6,11 @@ CommandFileOpen::CommandFileOpen()
 }
 
 void CommandFileOpen::runCommand(JsonCheck& userFile) {
-    assert(commArgs.size() == 1);
+    if (commArgs.empty()) {
+        cout << "No parameters found." << endl;
+        return;
+    }
+    //assert(commArgs.size() == 1);
 
     cout << "Loading the data from the file ..." << endl;
     userFile.openFile(commArgs[0]);

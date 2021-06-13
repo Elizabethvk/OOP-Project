@@ -9,7 +9,8 @@ CommandClose::CommandClose()
 
 
 void CommandClose::runCommand(JsonCheck& userFile) {
-    assert(commArgs.empty());
+    
+   // assert(commArgs.empty());
     
     userFile.closeFile();
 }

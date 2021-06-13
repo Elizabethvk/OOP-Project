@@ -7,9 +7,11 @@ CommandEdit::CommandEdit()
 
 void CommandEdit::runCommand(JsonCheck& userFile) {
     stringstream userArguments;
-    assert(!commArgs.empty());
+    if (commArgs.empty()) {
+        cout << "No parameters found." << endl;
+        return;
+    }
 
-    //TODO Array <= ?
     for (unsigned int i = 0; i < commArgs.size(); ++i) {
 
         userArguments << commArgs[i];

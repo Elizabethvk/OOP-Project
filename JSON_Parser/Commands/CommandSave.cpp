@@ -9,7 +9,8 @@ CommandSave::CommandSave()
 
 
 void CommandSave::runCommand(JsonCheck& userFile) {
-    assert(commArgs.empty());
+   
+   // assert(commArgs.empty());
 
     userFile.saveFile();
 }
