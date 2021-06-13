@@ -46,6 +46,7 @@ public:
     //! Function searching in the file by given key
     virtual void keySearch(const string& key) const {}
 
+    virtual void keyChange(const string& key, JsonValue* value){}
     //! Function to remove something by given key
     virtual void removeByKey(const string& key) {}
 

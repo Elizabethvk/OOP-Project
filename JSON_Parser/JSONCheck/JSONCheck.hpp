@@ -103,7 +103,8 @@ public:
     //! Default contructor
     JsonCheck();
 
-    // JsonCheck(const string& fileInfo);
+    //! Destructor
+    ~JsonCheck();
 
     //! The file open function
     void openFile(const string& filePath);    
@@ -141,6 +142,8 @@ public:
     //! Function printing the menu
     void help() const;
 
+    //! Function move
+    void move(const string& str, stringstream& fileStream);
 };
 
 

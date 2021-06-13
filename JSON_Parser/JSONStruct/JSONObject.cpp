@@ -12,6 +12,7 @@ string JsonObject::addSpace(const unsigned int n) const {
     return space;
 }
 
+
 JsonObject::JsonObject() {
     type = JSONOBJECT;
 }
@@ -68,6 +69,30 @@ void JsonObject::keySearch(const string& key) const {
 }
 
 
+void JsonObject::keyChange(const string& key,JsonValue* value) {
+    int foundAt = -1;
+
+    for (unsigned int i = 0; i < keys.size(); ++i) {
+        if (key == keys[i]) {
+            foundAt = i;
+            values[i] = value;
+            return;
+        }
+        else if (values[i]->getType() == JSONOBJECT) {
+            values[i]->keyChange(key,value);
+            break;
+        }
+
+    }
+
+    if (foundAt == -1) {
+        cout << "Couldn't find this key: " << key << endl;
+        return;
+    }
+}
+
+
+
 void JsonObject::edit(const string& key, JsonValue*& value) {
     bool hasSomethingChanged = false;
 
@@ -96,9 +121,10 @@ bool JsonObject::doKeyAndValueMatch(const string& key) const {
 
 void JsonObject::removeByKey(const string& key) {
     bool isFound = false;
-    for (unsigned int i = 0; i < keys.size(); ++i) {
+    for (int i = 0; i < keys.size(); ++i) {
         if (key == keys[i]) {
-            keys.erase(keys.begin(), keys.begin() + i);
+            keys.erase(keys.begin()+i); // 
+            i--;
             isFound = true;
         }
     }
@@ -150,7 +176,7 @@ void JsonObject::print() const {
     for (unsigned int i = 0; i < sizeVect; ++i ) {
         cout << addSpace(SPACE_TO_PRINT);
 
-        cout << " \"" << keys[i] << "\": \" ";
+        cout << " \"" << keys[i] << "\": ";
 
         values[i]->print();
 

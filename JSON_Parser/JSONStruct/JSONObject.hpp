@@ -21,6 +21,7 @@ private:
     //! Function printing more space
     string addSpace(const unsigned int n) const; 
 
+
 public:
     //! Default constructor
     JsonObject();
@@ -30,6 +31,9 @@ public:
 
     //! Function getting the type
     Type getType() const;
+
+
+    void keyChange(const string& key, JsonValue* value);
 
     //! Function getting the value by given key
     JsonValue* getValueByKey(const string& key) const;
