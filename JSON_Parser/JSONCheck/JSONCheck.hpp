@@ -7,9 +7,11 @@
 #ifndef JSONCHECK_H
 #define JSONCHECK_H
 
-#include "../Custom Exceptions/NotAValue.h"
-#include "../Custom Exceptions/NotAValidArrayOpen.h"
-#include "../Custom Exceptions/NotAValidArrayClose.h"
+#include "../Custom Exceptions/NotAValue.hpp"
+#include "../Custom Exceptions/NotAValidArrayOpen.hpp"
+#include "../Custom Exceptions/NotAValidArrayClose.hpp"
+#include "../Custom Exceptions/NotAKeyWord.hpp"
+#include "../Custom Exceptions/NotAValidValue.hpp"
 
 #include "../ControlVariables/ControlVariables.hpp"
 
@@ -53,7 +55,7 @@ private:
     char whichOperation(const char& ch) const;
 
     //! A function cheking wether the char is a literal
-    bool inputLiteral(stringstream& fileStream, const string& str) const;
+    bool isInputLiteral(stringstream& fileStream, const string& str) const;
 
     // bool isItKeyWord(stringstream& fileStream, char symbolObjType);
 
