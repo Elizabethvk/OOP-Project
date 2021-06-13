@@ -35,19 +35,19 @@ public:
     virtual Type getType() const = 0;
 
     //! Function getter - string value
-    virtual string getJsonStringValue() const;
+    virtual string getJsonStringValue() const {};
 
     //! Function getter - number
-    virtual double getJsonNumber() const;
+    virtual double getJsonNumber() const {};
 
     //! Function getter - boolean
-    virtual bool getJsonBool() const;
+    virtual bool getJsonBool() const {};
 
     //! Function searching in the file by given key
-    virtual void keySearch(const string& key) const;
+    virtual void keySearch(const string& key) const {};
 
     //! Function to remove something by given key
-    virtual void removeByKey(const string& key);
+    virtual void removeByKey(const string& key) {};
 
     //! Printing values
     virtual void print() const = 0;

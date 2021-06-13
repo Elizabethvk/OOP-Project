@@ -40,7 +40,7 @@ private:
     //! Helper functions:
 
     //! A function for moving the pointer to a place with a valid symbol
-    char inputWhitespace(stringstream& fileStream) const;
+    void inputWhitespace(stringstream& fileStream) const;
 
     //! A function cheking wether the char is a whitespace
     bool isItWhitespace(const char& checkSymbol) const;
@@ -79,19 +79,19 @@ private:
     //! Reading the JSON file:
 
     //! A function getting the string as an input
-    string inputString(stringstream& fileStream, char checkSymbol) const;
+    string inputString(stringstream& fileStream) const;
 
     //! A function getting an array as an input
     JsonArray* inputArray(stringstream& fileStream) const;
 
     //! A function getting a value as an input
-    JsonValue* inputValue(stringstream& fileStream, char symbolObjType) const;
+    JsonValue* inputValue(stringstream& fileStream) const;
 
     //! A function getting an object as an input
-    JsonObject* inputObject(stringstream& fileStream, char checkSymbol) const;
+    JsonObject* inputObject(stringstream& fileStream) const;
 
     //! A function getting a number as an input
-    JsonValue* inputNumber(stringstream& fileStream, char symbolObjType) const;
+    JsonValue* inputNumber(stringstream& fileStream) const;
     
     //! A function getting a json value as an input
     JsonValue* inputJson(stringstream& fileStream) const;

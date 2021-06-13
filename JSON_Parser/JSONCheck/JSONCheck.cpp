@@ -9,14 +9,11 @@
 
 
 
-char JsonCheck::inputWhitespace(stringstream& fileStream) const{
-    char checkSymbol = fileStream.get();
+void JsonCheck::inputWhitespace(stringstream& fileStream) const{
 
-    while (allWhitespace.find(checkSymbol) != string::npos) {
-        checkSymbol = fileStream.get();
+    while (isItWhitespace(fileStream.peek())) {
+        fileStream.get();
     }
-    // TODO will it stay the same
-    return checkSymbol;
 }
 
 bool JsonCheck::isItWhitespace(const char& checkSymbol) const {
@@ -40,8 +37,8 @@ char JsonCheck::whichOperation(const char& ch) const {
 }
 
 bool JsonCheck::isInputLiteral(stringstream& fileStream, const string& str) const{
-    char temp[str.size()];
-    fileStream.read(temp, str.size());
+    string temp;
+    fileStream.read((char*)&temp, str.length());
 
     return str == temp;
 }
@@ -135,7 +132,9 @@ double JsonCheck::getNumber (stringstream& fileStream, char& ch) const {
     
     // cout << getNumberStream.str() << endl;
 
-    ch = inputWhitespace(fileStream);
+    inputWhitespace(fileStream);
+
+    // ch = 
     double number = 0;
 
     // double nrFStr = stoi(numbStr);
@@ -266,17 +265,18 @@ vector<ControlVariables> JsonCheck::parsingCommand (const string& command) {
 
 
 
-string JsonCheck::inputString(stringstream& fileStream, char checkSymbol) const {
+string JsonCheck::inputString(stringstream& fileStream) const {
     // char checkSymbol = fileStream.get();
     // cout << "Chek: " <<  checkSymbol << endl;
-    
-    if (checkSymbol != '\"'){
+
+    if (fileStream.get() != '\"'){
         throw std::runtime_error("Keys and values start with \'\"\' ");
     }
 
-    checkSymbol = fileStream.get();
+    char checkSymbol = fileStream.get();
 
     string key;
+
     while (checkSymbol != '\"') {
         key += checkSymbol;
         checkSymbol = fileStream.get();
@@ -293,7 +293,8 @@ JsonArray* JsonCheck::inputArray(stringstream& fileStream) const {
         throw NotAValidOpenArray();
     }
 
-    checkSymbol = inputWhitespace(fileStream);
+    inputWhitespace(fileStream);
+    checkSymbol = fileStream.peek();
 
     if (checkSymbol == ']') {
         fileStream.get();
@@ -311,7 +312,7 @@ JsonArray* JsonCheck::inputArray(stringstream& fileStream) const {
     //         checkSymbol = inputWhitespace(fileStream);
     //     }
     do {
-        valuesArray.push_back(inputValue(fileStream, checkSymbol));
+        valuesArray.push_back(inputValue(fileStream));
         checkSymbol = fileStream.get();
 
     } while (checkSymbol == ',');
@@ -329,17 +330,18 @@ JsonArray* JsonCheck::inputArray(stringstream& fileStream) const {
     return new JsonArray(valuesArray);
 }
 
-JsonValue* JsonCheck::inputValue(stringstream& fileStream, char symbolObjType) const {
+JsonValue* JsonCheck::inputValue(stringstream& fileStream) const {
     // double number = 0;
+    inputWhitespace(fileStream);
+    char symbolObjType = fileStream.peek();
 
-    symbolObjType = inputWhitespace(fileStream);
     JsonValue* valueOfKey;
     string strValueOfKey = "";
 
     switch (symbolObjType)
     {
     case '{':
-        valueOfKey = inputObject(fileStream, symbolObjType);
+        valueOfKey = inputObject(fileStream );
         break;
 
     case '[':
@@ -347,7 +349,7 @@ JsonValue* JsonCheck::inputValue(stringstream& fileStream, char symbolObjType) c
         break;
 
     case '\"':
-        strValueOfKey = inputString(fileStream, symbolObjType);
+        strValueOfKey = inputString(fileStream );
         valueOfKey = new JsonString(strValueOfKey);
         break;
 
@@ -382,24 +384,24 @@ JsonValue* JsonCheck::inputValue(stringstream& fileStream, char symbolObjType) c
         break;
 
     case 'e':
-        valueOfKey = inputNumber(fileStream, symbolObjType);
+        valueOfKey = inputNumber(fileStream );
         break;
 
     case 'E':
-        valueOfKey = inputNumber(fileStream, symbolObjType);
+        valueOfKey = inputNumber(fileStream );
         break;
 
     case '0':
-        valueOfKey = inputNumber(fileStream, symbolObjType);
+        valueOfKey = inputNumber(fileStream );
         break;
 
     case '-':
-        valueOfKey = inputNumber(fileStream, symbolObjType);
+        valueOfKey = inputNumber(fileStream );
         break;
 
     default:
         if (isItDigit(symbolObjType)) {
-            valueOfKey = inputNumber(fileStream, symbolObjType);
+            valueOfKey = inputNumber(fileStream );
         }
         else {
             // throw std::runtime_error("Unknown value!");
@@ -408,18 +410,22 @@ JsonValue* JsonCheck::inputValue(stringstream& fileStream, char symbolObjType) c
         break;
     }
 
-    symbolObjType = inputWhitespace(fileStream);
+    inputWhitespace(fileStream);
+
     return valueOfKey;
 }
 
-JsonObject* JsonCheck::inputObject (stringstream& fileStream, char checkSymbol) const {
-    checkSymbol = inputWhitespace(fileStream);
+JsonObject* JsonCheck::inputObject (stringstream& fileStream) const {
+    inputWhitespace(fileStream);
+
+    char checkSymbol = fileStream.get();
     
     if (checkSymbol != '{') {
         throw std::runtime_error("It should start with '{'");
     }
 
-    checkSymbol = inputWhitespace(fileStream);
+    inputWhitespace(fileStream);
+    checkSymbol = fileStream.peek();
 
     vector<string> userKeys;
     vector<JsonValue*> userValues;
@@ -430,19 +436,21 @@ JsonObject* JsonCheck::inputObject (stringstream& fileStream, char checkSymbol) 
         string key, value;
         
         do {
-            checkSymbol = inputWhitespace(fileStream);
+            inputWhitespace(fileStream);
 
-            key = inputString(fileStream, checkSymbol);
+            key = inputString(fileStream);
 
-            checkSymbol = inputWhitespace(fileStream);
+            inputWhitespace(fileStream);
+
+            checkSymbol = fileStream.get();
 
             if (checkSymbol != ':') {
                 throw std::runtime_error("Expected a : between the key and its value!");
             }
-            
-            checkSymbol = inputWhitespace(fileStream);
 
-            userValues.push_back(inputValue(fileStream, checkSymbol));
+            checkSymbol = fileStream.get();
+
+            userValues.push_back(inputValue(fileStream));
 
             userKeys.push_back(key);
             checkSymbol = fileStream.get();
@@ -462,10 +470,12 @@ JsonObject* JsonCheck::inputObject (stringstream& fileStream, char checkSymbol) 
     return new JsonObject(userKeys, userValues);
 }
 
-JsonValue* JsonCheck::inputNumber(stringstream& fileStream, char symbolObjType) const {
+JsonValue* JsonCheck::inputNumber(stringstream& fileStream) const {
     double number = 0;
-    
+    char symbolObjType = fileStream.get();
+
     if (isItDigit(symbolObjType)) {
+        symbolObjType = fileStream.get();
         number = getNumber(fileStream, symbolObjType);
         return new JsonNumber(number);
     }
@@ -485,12 +495,14 @@ JsonValue* JsonCheck::inputNumber(stringstream& fileStream, char symbolObjType) 
 }
 
 JsonValue* JsonCheck::inputJson (stringstream& fileStream) const {
-    char checkSymbol = inputWhitespace(fileStream);
+    inputWhitespace(fileStream);
+
+    char checkSymbol = fileStream.peek();
 
     switch (checkSymbol)
     {
     case '{' :
-        return inputObject(fileStream, checkSymbol);     //TODO check symbol next or current?
+        return inputObject(fileStream);     //TODO check symbol next or current?
     case '[' :
         return inputArray(fileStream);
     default:
@@ -549,10 +561,7 @@ void JsonCheck::openFile(const string& filePath) {
             fileStream << eachLine;
         }
 
-        char firstSymbol = fileStream.get();
-        firstSymbol = inputWhitespace(fileStream);
-
-        jsonFile = inputObject(fileStream, firstSymbol);
+        jsonFile = inputObject(fileStream);
         file.seekg(std::ios::beg);
 
         isJsonLoaded = true;
@@ -592,12 +601,7 @@ void JsonCheck::create (const string& str, stringstream& fileStream) {
 
     try
     {
-        char ch = fileStream.get();
-        if (isItWhitespace(ch)) {
-            ch = inputWhitespace(fileStream);
-        }
-
-        jsonValue = inputValue(fileStream, ch);
+        jsonValue = inputValue(fileStream);
     }
     catch (const std::exception& e) {
         cout << "Not a valid JSON Value!" << endl;
@@ -666,7 +670,7 @@ void JsonCheck::edit(const string& str, stringstream& fileStream) {
 
     try
     {
-        jsonValue = inputValue(fileStream, fileStream.get());
+        jsonValue = inputValue(fileStream);
     }
     catch(const std::exception& e){
         cout << "Problem in the format of the VALUE!" << endl;
