@@ -1,5 +1,5 @@
-#ifndef DELETE_H
-#define DELETE_H
+#ifndef REMOVE_H
+#define REMOVE_H
 
 #include "ICommand.hpp"
 

@@ -1,5 +1,7 @@
 #include "CommandPrint.hpp" 
 
+
+
 CommandPrint::CommandPrint()
     : ICommand("print")
 {
@@ -7,5 +9,6 @@ CommandPrint::CommandPrint()
 
 void CommandPrint::runCommand(JsonCheck& userFile) {
     assert(commArgs.empty());
+    
     userFile.print();
 }

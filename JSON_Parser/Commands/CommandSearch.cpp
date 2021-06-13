@@ -7,5 +7,6 @@ CommandSearch::CommandSearch()
 
 void CommandSearch::runCommand(JsonCheck& userFile) {
     assert(commArgs.size() == 1);
+    
     userFile.searchInFile(commArgs[0]);
 }

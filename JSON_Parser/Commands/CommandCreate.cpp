@@ -1,12 +1,15 @@
 #include "CommandCreate.hpp"
 
+
+
 CommandCreate::CommandCreate() 
     : ICommand("create")
 {
 }
 
+
 void CommandCreate::runCommand(JsonCheck& userFile) {
-    assert(commArgs.empty());
+    assert(!commArgs.empty());
     stringstream userCommandArgs;
 
     for (unsigned int i = 0; i < commArgs.size(); ++i) {

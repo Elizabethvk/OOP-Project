@@ -7,8 +7,9 @@ CommandEdit::CommandEdit()
 
 void CommandEdit::runCommand(JsonCheck& userFile) {
     stringstream userArguments;
-    assert(commArgs.empty());
+    assert(!commArgs.empty());
 
+    //TODO Array <= ?
     for (unsigned int i = 0; i < commArgs.size(); ++i) {
         userArguments << commArgs[i];
     }
