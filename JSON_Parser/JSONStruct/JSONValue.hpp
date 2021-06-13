@@ -49,9 +49,6 @@ public:
     //! Function to remove something by given key
     virtual void removeByKey(const string& key);
 
-    //! Printing just the value
-    virtual void printValue() const = 0; // TODO Do i need u
-
     //! Printing values
     virtual void print() const = 0;
 
