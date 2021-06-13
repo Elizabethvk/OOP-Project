@@ -11,7 +11,11 @@ void CommandEdit::runCommand(JsonCheck& userFile) {
 
     //TODO Array <= ?
     for (unsigned int i = 0; i < commArgs.size(); ++i) {
+
         userArguments << commArgs[i];
+        if (i < commArgs.size() - 1) {
+            userArguments << " ";
+        }
     }
 
     userFile.edit(commArgs[0], userArguments);
