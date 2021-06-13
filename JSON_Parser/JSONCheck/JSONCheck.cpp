@@ -7,61 +7,7 @@
 
 #include "../ControlVariables/ControlVariables.hpp"
 
-// JsonCheck::JsonCheck(const string& fileInfo) 
-//     : fileName(fileInfo)
-// {
-// }
 
-void JsonCheck::openFile(const string& filePath) {
-    string eachLine;
-
-    if (isJsonLoaded) {
-        cout << "File is already opened!" << endl;
-        return;
-    }
-
-    ifstream file;
-    file.open(filePath, std::ios::in);
-
-    if (!file.is_open()) {
-        // couldnt open file with this name
-        // throw std::
-        // TODO custom except
-        isJsonLoaded = false;
-        cout << "Creating new empty file with name: " << filePath << endl;
-        ofstream openNewFile;
-        openNewFile.open(filePath, std::ios::out);
-
-        if (!openNewFile.is_open()) {
-            isJsonLoaded = false;
-            throw std::runtime_error("Error creating new file! Please reopen the program!");
-        }
-        openNewFile.close();
-        return;
-    }
-    else {
-        fileName = filePath;
-
-        while (getline(file, eachLine)) {
-            fileStream << eachLine;
-        }
-
-        char firstSymbol = fileStream.get();
-        firstSymbol = inputWhitespace(fileStream);
-        jsonFile = inputObject(fileStream, firstSymbol);
-        file.seekg(std::ios::beg);
-
-        isJsonLoaded = true;
-        cout << "The file data is loaded and ready to be used!" << endl;
-        file.close();
-    }
-
-}
-
-JsonValue* JsonCheck::openCreate() {
-    openFile(fileName);
-    return inputJson(fileStream);
-}
 
 char JsonCheck::inputWhitespace(stringstream& fileStream) const{
     char checkSymbol = fileStream.get();
@@ -81,45 +27,6 @@ bool JsonCheck::isItDigit(const char& checkSymbol) const {
     return checkSymbol >= '0' && checkSymbol <= '9';
 }
 
-// JsonBool* JsonCheck::keyWords(stringstream& fileStream, char symbolObjType) {
-//     // char nextLetter = 0;
-//     // bool isRight = 0;
-//     switch (symbolObjType)
-//     {
-//         case 't':
-//         //TODO: fix
-//             if (!inputLiteral(fileStream, "true")) {
-//                 throw std::runtime_error("The value should have been \"true\"");
-//             }
-//             else {
-//                 return JsonBool(true);
-//             }
-//             break;
-//         case 'f':
-//             if (!inputLiteral(fileStream, "false")) {
-//                 throw std::runtime_error("The value should have been \"false\"");
-//             }
-//             else {
-//                 return JsonBool(false);
-//             }
-//             break;
-//         case 'n':
-//             if (!inputLiteral(fileStream, "null")) {
-//                 throw std::runtime_error("The value should have been \"nul\"");
-//             }
-//             else {
-//                 return nullptr;
-//             }
-//             break;
-//     }
-//     return isRight;
-// }
-
-bool JsonCheck::inputLiteral(stringstream& fileStream, const string& str) const{
-    char temp[str.size()];
-    fileStream.read(temp, str.size());
-    return str == temp;
-}
 
 bool JsonCheck::isItOperation(const char& ch) const {
     return ch == '+' || ch == '-';
@@ -132,7 +39,233 @@ char JsonCheck::whichOperation(const char& ch) const {
     // Todo:What if not?
 }
 
- 
+bool JsonCheck::inputLiteral(stringstream& fileStream, const string& str) const{
+    char temp[str.size()];
+    fileStream.read(temp, str.size());
+    return str == temp;
+}
+
+
+double JsonCheck::getNumber (stringstream& fileStream, char& ch) const {
+    stringstream getNumberStream;
+    // string numbStr;
+    int dotCntr = -1;
+    // cout << "ch1: " << ch << endl;
+
+
+    if (!isItDigit(ch) && isItOperation(ch)) {
+        // cout << "in" << endl;
+        ch = fileStream.get();
+        // cout << "ch2: " << ch << endl;
+
+        // TODO: throws, -'ses ...?
+    }
+
+    // if (isItOperation(ch) || !isItDigit(ch)) {
+    //     throw std::runtime_error("Too many operations e.g. ++/--");
+    // }
+    double exponent = 1;
+    
+    // if (ch == 'e' || ch == 'E') {
+    //     cout << "e" << endl;
+    //     exponent = getNumberE(fileStream, ch);
+    //     cout << "ex " << exponent << endl; 
+    // }
+
+
+    if (!isItDigit(ch)) {
+        cout << "ch3: " << ch << endl;
+        // throw std::runtime_error("Unknown symbol in number!");
+        throw UnknownValue();
+    }
+
+    do {
+        if (ch == '.') {
+            // numbStr += ch;
+            getNumberStream << ch;
+            // ch = fileStream.get();
+            // if (!isItDigit(ch)) {
+            //     throw std::runtime_error("After '.' there should be one or more numbers!");
+            // }
+            ++dotCntr;
+
+            if (dotCntr > 0) {
+                throw std::runtime_error("Only one '.' is acceptable in a number!");
+            } 
+
+            char nextSymbolCheck = fileStream.get();
+            if (!isItDigit(nextSymbolCheck)) {
+                throw std::runtime_error("Only digits are acceptable after a '.'!");
+            }
+
+            // getNumberStream << ch;
+            ch = fileStream.get();
+            continue;
+        }
+        // cout << "ChN: " << ch << endl;
+        // numbStr = numbStr + ch;
+        // cout << "Str: " << numbStr << endl;
+        getNumberStream << ch;
+
+        // ch = fileStream.get();
+        // cout << "ChN: -" << ch << endl;
+
+        if (ch == ',') {
+            break;
+            // throw std::runtime_error("There must be ',' at the end!");
+        }
+        else {
+            ch = fileStream.get();
+        }
+
+    } while (isItDigit(ch) || ch == '.' || ch == '0'); // TODO == '0'???
+
+
+    ch = fileStream.get();
+
+    
+    if (ch == 'e' || ch == 'E') {
+        exponent = getNumberE(fileStream, ch);
+    }
+    
+    // if (!isItWhitespace(ch)) {
+    //     //TODO message
+    //     throw std::runtime_error("");
+    // }
+    
+    // cout << getNumberStream.str() << endl;
+
+    ch = inputWhitespace(fileStream);
+    double number = 0;
+
+    // double nrFStr = stoi(numbStr);
+    // cout << "Stoi: " << nrFStr << endl;
+
+    getNumberStream >> number;
+    // cout << "Numb: " << number << endl;
+    return pow(number, exponent);
+}
+
+double JsonCheck::getNumberE (stringstream& fileStream, char& ch) const {
+    // double numE = 2.72;
+
+    if (ch != 'e' && ch != 'E'){
+        throw std::runtime_error("Missing 'e'/'E' in the number!");
+    }
+
+    ch = fileStream.get();
+    double exponent = 0;
+
+    // if(!isItOperation(ch) && isItDigit(ch)){
+    //     double numWithE = getNumber(fileStream, ch);
+    //     return numWithE * numE;
+    // }
+    // else if (!isItOperation(ch) && !isItDigit(ch)) {
+    //     throw std::runtime_error("Missing an operation after an 'e'!");
+    // }
+    // cout << "Ch: " << ch << endl;
+
+    if (isItOperation(ch)) {
+        // char operation = whichOperation(ch);
+        switch (ch)
+        {
+        case '-':
+            ch = fileStream.get();
+            exponent = getNumber(fileStream, ch);
+            return pow(10, -exponent);
+            // break;
+        case '+':
+            ch = fileStream.get();
+            exponent = getNumber(fileStream, ch);
+            return pow(10, exponent);
+
+        default:
+            throw std::runtime_error("Operation is followed by digits!");
+            break;
+        }
+    }
+    else if (isItDigit(ch)) {
+        exponent = getNumber(fileStream, ch);
+        // cout << "pow: " << pow(10, exponent) << endl;
+        return pow(10, exponent);
+    }
+    else {
+        throw std::runtime_error("Operation 'e'/'E' is followed by digits!");
+    }
+    // double temp = getNumber(fileStream, ch);
+    // return operation == '+' ? numE + temp : numE - temp;
+}
+
+
+void JsonCheck::checkAnswer(int& answer) {
+    while (answer == 1 || answer == 2 || !cin) {
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cout <<  "Choose an option between - 1 & 2" << endl;
+        cin >> answer;
+    }
+}
+
+
+
+int JsonCheck::stringToInt(const string& str) {
+    unsigned int numberSize = str.length();
+    int number = 0;
+
+    for(unsigned int i = 0 ; i  < numberSize ; ++i){
+        if(str[i] != '[' && str[i] != ']'){
+            number = number * 10 + str[i] - '0';
+        }
+    }
+
+    return number;
+}
+
+vector<ControlVariables> JsonCheck::parsingCommand (const string& command) {
+    unsigned int size = command.length();
+
+    vector<ControlVariables> variables;
+
+    string word;
+
+    for (unsigned int i = 0 ; i < size ; ++i){
+        if (i == size - 1 || command[i] == '.' || command[i] == '[' ||command[i] ==']'){
+
+            if(command[i] == ']'){
+                word.push_back(command[i]);
+                ControlVariables cntrlVars(word, stringToInt(word));
+                variables.push_back(cntrlVars);
+                word.clear();
+                continue;
+            }
+
+            if(i == size - 1){
+                word.push_back(command[i]);
+                ControlVariables cntrlVars(word, -1);
+                variables.push_back(cntrlVars);
+                word.clear();
+                continue;
+            }
+
+            ControlVariables cntrlVars(word,-1);
+            variables.push_back(cntrlVars);
+            word.clear();
+
+            if (command[i] =='.') {
+                continue;
+            }
+
+        }
+        word.push_back(command[i]);
+    }
+
+    return variables;
+}
+
+// Begin of the main functionality
+
+
+
 string JsonCheck::inputString(stringstream& fileStream, char checkSymbol) const {
     // char checkSymbol = fileStream.get();
     // cout << "Chek: " <<  checkSymbol << endl;
@@ -161,14 +294,15 @@ JsonArray* JsonCheck::inputArray(stringstream& fileStream) const {
     char checkSymbol = fileStream.get();
 
     if (checkSymbol != '[') {
-        throw std::runtime_error("Arrays start with \'[\'");
+        // throw std::runtime_error("Arrays start with \'[\'");
+        throw NotAValidOpenArray();
     }
 
     checkSymbol = inputWhitespace(fileStream);
 
     if (checkSymbol == ']') {
         fileStream.get();
-        return new JsonArray;
+        return new JsonArray();
     }
 
     vector<JsonValue*> valuesArray;
@@ -193,7 +327,8 @@ JsonArray* JsonCheck::inputArray(stringstream& fileStream) const {
     // TODO: up
     
     if (checkSymbol != ']') {
-        throw std::runtime_error("The array should be closed with \']\'");
+        // throw std::runtime_error("The array should be closed with \']\'");
+        throw NotAValidCloseArray();
     }
 
     return new JsonArray(valuesArray);
@@ -374,188 +509,61 @@ JsonValue* JsonCheck::inputJson (stringstream& fileStream) const {
     }
 }
 
-double JsonCheck::getNumber (stringstream& fileStream, char& ch) const {
-    stringstream getNumberStream;
-    // string numbStr;
-    int dotCntr = -1;
-    // cout << "ch1: " << ch << endl;
+// Begin of the public member functions
 
 
-    if (!isItDigit(ch) && isItOperation(ch)) {
-        // cout << "in" << endl;
-        ch = fileStream.get();
-        // cout << "ch2: " << ch << endl;
+// JsonCheck::JsonCheck(const string& fileInfo) 
+//     : fileName(fileInfo)
+// {
+// }
 
-        // TODO: throws, -'ses ...?
+
+
+void JsonCheck::openFile(const string& filePath) {
+    string eachLine;
+
+    if (isJsonLoaded) {
+        cout << "File is already opened!" << endl;
+        return;
     }
 
-    // if (isItOperation(ch) || !isItDigit(ch)) {
-    //     throw std::runtime_error("Too many operations e.g. ++/--");
-    // }
-    double exponent = 1;
-    
-    // if (ch == 'e' || ch == 'E') {
-    //     cout << "e" << endl;
-    //     exponent = getNumberE(fileStream, ch);
-    //     cout << "ex " << exponent << endl; 
-    // }
+    ifstream file;
+    file.open(filePath, std::ios::in);
 
+    if (!file.is_open()) {
+        // couldnt open file with this name
+        // throw std::
+        // TODO custom except
+        isJsonLoaded = false;
+        cout << "Creating new empty file with name: " << filePath << endl;
+        ofstream openNewFile;
+        openNewFile.open(filePath, std::ios::out);
 
-    if (!isItDigit(ch)) {
-        cout << "ch3: " << ch << endl;
-        throw std::runtime_error("Unknown symbol in number!");
-    }
-
-    do {
-        if (ch == '.') {
-            // numbStr += ch;
-            getNumberStream << ch;
-            // ch = fileStream.get();
-            // if (!isItDigit(ch)) {
-            //     throw std::runtime_error("After '.' there should be one or more numbers!");
-            // }
-            ++dotCntr;
-
-            if (dotCntr > 0) {
-                throw std::runtime_error("Only one '.' is acceptable in a number!");
-            } 
-
-            char nextSymbolCheck = fileStream.get();
-            if (!isItDigit(nextSymbolCheck)) {
-                throw std::runtime_error("Only digits are acceptable after a '.'!");
-            }
-
-            // getNumberStream << ch;
-            ch = fileStream.get();
-            continue;
+        if (!openNewFile.is_open()) {
+            isJsonLoaded = false;
+            throw std::runtime_error("Error creating new file! Please reopen the program!");
         }
-        // cout << "ChN: " << ch << endl;
-        // numbStr = numbStr + ch;
-        // cout << "Str: " << numbStr << endl;
-        getNumberStream << ch;
-
-        // ch = fileStream.get();
-        // cout << "ChN: -" << ch << endl;
-
-        if (ch == ',') {
-            break;
-            // throw std::runtime_error("There must be ',' at the end!");
-        }
-        else {
-            ch = fileStream.get();
-        }
-
-    } while (isItDigit(ch) || ch == '.' || ch == '0'); // TODO == '0'???
-
-
-    ch = fileStream.get();
-
-    
-    if (ch == 'e' || ch == 'E') {
-        exponent = getNumberE(fileStream, ch);
-    }
-    
-    // if (!isItWhitespace(ch)) {
-    //     //TODO message
-    //     throw std::runtime_error("");
-    // }
-    
-    // cout << getNumberStream.str() << endl;
-
-    ch = inputWhitespace(fileStream);
-    double number = 0;
-
-    // double nrFStr = stoi(numbStr);
-    // cout << "Stoi: " << nrFStr << endl;
-
-    getNumberStream >> number;
-    // cout << "Numb: " << number << endl;
-    return pow(number, exponent);
-}
-
-double JsonCheck::getNumberE (stringstream& fileStream, char& ch) const {
-    // double numE = 2.72;
-
-    if (ch != 'e' && ch != 'E'){
-        throw std::runtime_error("Missing 'e'/'E' in the number!");
-    }
-
-    ch = fileStream.get();
-    double exponent = 0;
-
-    // if(!isItOperation(ch) && isItDigit(ch)){
-    //     double numWithE = getNumber(fileStream, ch);
-    //     return numWithE * numE;
-    // }
-    // else if (!isItOperation(ch) && !isItDigit(ch)) {
-    //     throw std::runtime_error("Missing an operation after an 'e'!");
-    // }
-    // cout << "Ch: " << ch << endl;
-
-    if (isItOperation(ch)) {
-        // char operation = whichOperation(ch);
-        switch (ch)
-        {
-        case '-':
-            ch = fileStream.get();
-            exponent = getNumber(fileStream, ch);
-            return pow(10, -exponent);
-            // break;
-        case '+':
-            ch = fileStream.get();
-            exponent = getNumber(fileStream, ch);
-            return pow(10, exponent);
-
-        default:
-            throw std::runtime_error("Operation is followed by digits!");
-            break;
-        }
-    }
-    else if (isItDigit(ch)) {
-        exponent = getNumber(fileStream, ch);
-        // cout << "pow: " << pow(10, exponent) << endl;
-        return pow(10, exponent);
+        openNewFile.close();
+        return;
     }
     else {
-        throw std::runtime_error("Operation 'e'/'E' is followed by digits!");
+        fileName = filePath;
+
+        while (getline(file, eachLine)) {
+            fileStream << eachLine;
+        }
+
+        char firstSymbol = fileStream.get();
+        firstSymbol = inputWhitespace(fileStream);
+        jsonFile = inputObject(fileStream, firstSymbol);
+        file.seekg(std::ios::beg);
+
+        isJsonLoaded = true;
+        cout << "The file data is loaded and ready to be used!" << endl;
+        file.close();
     }
-    // double temp = getNumber(fileStream, ch);
-    // return operation == '+' ? numE + temp : numE - temp;
-}
-
-void JsonCheck::help() const {
-        cout << "You can choose from the following commands:" << endl;
-    cout << "------------------------------------------------------" << endl;
-    cout << "↓ To open a file ↓" << endl;
-        cout << "\t> open <file>" << endl;
-    cout << "↓ To close the file ↓" << endl;
-        cout << "\t> close" << endl;
-    cout << "↓ To save currently opened file ↓" << endl;
-        cout << "\t> save" << endl;
-    cout << "↓ To save currently opened file with in <file> ↓" << endl;
-        cout << "\t> saveAs <file>" << endl;
-    cout << "↓ To validate if the file is in a valid JSON format ↓" << endl;
-        cout << "\t> validate" << endl;
-    cout << "↓ To search the file by <key> ↓" << endl;
-        cout << "\t> search <key>" << endl;
-    cout << "↓ To change the value of <path> to <string> ↓" << endl;
-        cout << "\t> edit <path> <string>" << endl;
-    cout << "↓ To add a new json object by key <path> with value <string> ↓" << endl;
-        cout << "\t> create <path> <string>" << endl;
-    cout << "↓ To remove an element <path> ↓" << endl;
-        cout << "\t> remove <path>" << endl;
-    cout << "↓ To move an element from its place <from> to the place of another element <to> ↓" << endl;
-        cout << "\t> move <from> <to>" << endl;
-    cout << "↓ To print the file ↓" << endl;
-        cout << "\t> print" << endl;
-    cout << "↓ To exit the program ↓" << endl;
-        cout << "\t> exit" << endl;
-    cout << "↓ To see the available commands again ↓" << endl;
-        cout << "\t> help" << endl;
-    cout << "------------------------------------------------------" << endl;
 
 }
-
 
 bool JsonCheck::checkJsonFile() {
     if (!isJsonLoaded) {
@@ -576,17 +584,10 @@ bool JsonCheck::checkJsonFile() {
     return true;
 }
 
-void JsonCheck::closeFile() {
-    if (!isJsonLoaded) {
-        cout << "There isn't an open file to close!";
-        return;
-    }
-    
-    cout << "The file is closed successfully! File: " << fileName << endl;
-    fileName.clear();
-    fileStream.clear();
-    isJsonLoaded = false;
-}  
+void JsonCheck::create (const string& str, stringstream& fileStream) {
+
+}
+
 
 void JsonCheck::searchInFile(const string& str) {
     if (!isJsonLoaded) {
@@ -605,157 +606,7 @@ void JsonCheck::searchInFile(const string& str) {
     // TODO dynamic memory
 }
 
-void JsonCheck::saveFile() {
-    if(!isJsonLoaded) {
-        cout << "No file is open to save the data to!";
-        return;
-    }
 
-    ofstream file;
-    file.open(fileName, std::ios_base::trunc | std::ios_base::out);
-
-    if(!file.is_open()) {
-        cout << "Something went wrong & the file cannot be opened!" << endl;
-        return;
-    }
-
-    cout << "Saving the changes into the file!" << endl;
-    jsonFile->save(file);
-
-    cout << "Saved the file successfully!" << endl;
-    file.close();
-}
-
-void JsonCheck::saveAsFile(const string& newFileName) {
-    if(!isJsonLoaded) {
-        cout << "No file is open to save the data to!";
-        return;
-    }
-
-    ofstream file;
-    file.open(newFileName, std::ios_base::trunc | std::ios_base::out);
-
-    if(!file.is_open()) {
-        cout << "Something went wrong & the file cannot be opened!" << endl;
-        return;
-    }
-
-    cout << "Saving the changes into the file!" << endl;
-    // stringstream newFileData;
-    jsonFile->save(file);
-
-    cout << "Saved the file successfully!" << endl;
-    file.close();
-}
-
-
-void JsonCheck::print() {
-    if (!isJsonLoaded) {
-        cout << "Json file haven't been opened! Nothing to show!";
-        return;
-    }
-
-    // JsonValue* jsonValue = inputJson(fileStream);
-    // jsonValue->print();
-    jsonFile->print();
-    // delete jsonValue;
-}
-
-void JsonCheck::checkAnswer(int& answer) {
-    while (answer == 1 || answer == 2 || !cin) {
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout <<  "Choose an option between - 1 & 2" << endl;
-        cin >> answer;
-    }
-}
-
-void JsonCheck::terminateFunction() {
-    int answer;
-    cout << "There might be unsaved data!" << endl;
-    cout << "If you want to exit without saving it type 1!" << endl;
-    cout << "If you want to exit and saving it type 2!" << endl;
-
-    cin >> answer;
-    
-    checkAnswer(answer);
-
-    if (answer == 1) {
-        exit(0); // TODO
-    }
-    else if (answer == 2) {
-        cout << "If you want to save it to the same file write 1, if you want to save it to new file write 2!" << endl;
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cin >> answer;
-
-        checkAnswer(answer);
-
-        if (answer == 1) {
-            saveFile();
-        }
-        else if (answer == 2) {
-            cout << "Please input the path of the file!" << endl;
-            string path;
-            getline(cin, path);
-            saveAsFile(path);
-        }
-    }
-}
-
-int JsonCheck::stringToInt(const string& str) {
-    unsigned int numberSize = str.length();
-    int number = 0;
-
-    for(unsigned int i = 0 ; i  < numberSize ; ++i){
-        if(str[i] != '[' && str[i] != ']'){
-            number = number * 10 + str[i] - '0';
-        }
-    }
-
-    return number;
-}
-
-vector<ControlVariables> JsonCheck::parsingCommand (const string& command) {
-    unsigned int size = command.length();
-
-    vector<ControlVariables> variables;
-
-    string word;
-
-    for (unsigned int i = 0 ; i < size ; ++i){
-        if (i == size - 1 || command[i] == '.' || command[i] == '[' ||command[i] ==']'){
-
-            if(command[i] == ']'){
-                word.push_back(command[i]);
-                ControlVariables cntrlVars(word, stringToInt(word));
-                variables.push_back(cntrlVars);
-                word.clear();
-                continue;
-            }
-
-            if(i == size - 1){
-                word.push_back(command[i]);
-                ControlVariables cntrlVars(word, -1);
-                variables.push_back(cntrlVars);
-                word.clear();
-                continue;
-            }
-
-            ControlVariables cntrlVars(word,-1);
-            variables.push_back(cntrlVars);
-            word.clear();
-
-            if (command[i] =='.') {
-                continue;
-            }
-
-        }
-        word.push_back(command[i]);
-    }
-
-    return variables;
-}
 
 void JsonCheck::edit(const string& str, stringstream& fileStream) {
     if(!isJsonLoaded){
@@ -844,6 +695,199 @@ void JsonCheck::edit(const string& str, stringstream& fileStream) {
 
 }
 
+
+
 void JsonCheck::removeByPath(const string& key) {
     vector<ControlVariables> variables = parsingCommand(key);
 }
+
+
+void JsonCheck::closeFile() {
+    if (!isJsonLoaded) {
+        cout << "There isn't an open file to close!";
+        return;
+    }
+    
+    cout << "The file is closed successfully! File: " << fileName << endl;
+    fileName.clear();
+    fileStream.clear();
+    isJsonLoaded = false;
+}  
+
+
+void JsonCheck::saveFile() {
+    if(!isJsonLoaded) {
+        cout << "No file is open to save the data to!";
+        return;
+    }
+
+    ofstream file;
+    file.open(fileName, std::ios_base::trunc | std::ios_base::out);
+
+    if(!file.is_open()) {
+        cout << "Something went wrong & the file cannot be opened!" << endl;
+        return;
+    }
+
+    cout << "Saving the changes into the file!" << endl;
+    jsonFile->save(file);
+
+    cout << "Saved the file successfully!" << endl;
+    file.close();
+}
+
+void JsonCheck::saveAsFile(const string& newFileName) {
+    if(!isJsonLoaded) {
+        cout << "No file is open to save the data to!";
+        return;
+    }
+
+    ofstream file;
+    file.open(newFileName, std::ios_base::trunc | std::ios_base::out);
+
+    if(!file.is_open()) {
+        cout << "Something went wrong & the file cannot be opened!" << endl;
+        return;
+    }
+
+    cout << "Saving the changes into the file!" << endl;
+    // stringstream newFileData;
+    jsonFile->save(file);
+
+    cout << "Saved the file successfully!" << endl;
+    file.close();
+}
+
+
+
+void JsonCheck::terminateFunction() {
+    int answer;
+    cout << "There might be unsaved data!" << endl;
+    cout << "If you want to exit without saving it type 1!" << endl;
+    cout << "If you want to exit and saving it type 2!" << endl;
+
+    cin >> answer;
+    
+    checkAnswer(answer);
+
+    if (answer == 1) {
+        exit(0); // TODO
+    }
+    else if (answer == 2) {
+        cout << "If you want to save it to the same file write 1, if you want to save it to new file write 2!" << endl;
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin >> answer;
+
+        checkAnswer(answer);
+
+        if (answer == 1) {
+            saveFile();
+        }
+        else if (answer == 2) {
+            cout << "Please input the path of the file!" << endl;
+            string path;
+            getline(cin, path);
+            saveAsFile(path);
+        }
+    }
+}
+
+
+
+// JsonValue* JsonCheck::openCreate() { //TODO
+//     openFile(fileName);
+//     return inputJson(fileStream);
+// }
+
+
+// JsonBool* JsonCheck::keyWords(stringstream& fileStream, char symbolObjType) {
+//     // char nextLetter = 0;
+//     // bool isRight = 0;
+//     switch (symbolObjType)
+//     {
+//         case 't':
+//         //TODO: fix
+//             if (!inputLiteral(fileStream, "true")) {
+//                 throw std::runtime_error("The value should have been \"true\"");
+//             }
+//             else {
+//                 return JsonBool(true);
+//             }
+//             break;
+//         case 'f':
+//             if (!inputLiteral(fileStream, "false")) {
+//                 throw std::runtime_error("The value should have been \"false\"");
+//             }
+//             else {
+//                 return JsonBool(false);
+//             }
+//             break;
+//         case 'n':
+//             if (!inputLiteral(fileStream, "null")) {
+//                 throw std::runtime_error("The value should have been \"nul\"");
+//             }
+//             else {
+//                 return nullptr;
+//             }
+//             break;
+//     }
+//     return isRight;
+// }
+
+
+ void JsonCheck::print() const{
+    if (!isJsonLoaded) {
+        cout << "Json file haven't been opened! Nothing to show!";
+        return;
+    }
+
+    // JsonValue* jsonValue = inputJson(fileStream);
+    // jsonValue->print();
+    jsonFile->print();
+    // delete jsonValue;
+}
+
+
+
+void JsonCheck::help() const {
+        cout << "You can choose from the following commands:" << endl;
+    cout << "------------------------------------------------------" << endl;
+    cout << "↓ To open a file ↓" << endl;
+        cout << "\t> open <file>" << endl;
+    cout << "↓ To close the file ↓" << endl;
+        cout << "\t> close" << endl;
+    cout << "↓ To save currently opened file ↓" << endl;
+        cout << "\t> save" << endl;
+    cout << "↓ To save currently opened file with in <file> ↓" << endl;
+        cout << "\t> saveAs <file>" << endl;
+    cout << "↓ To validate if the file is in a valid JSON format ↓" << endl;
+        cout << "\t> validate" << endl;
+    cout << "↓ To search the file by <key> ↓" << endl;
+        cout << "\t> search <key>" << endl;
+    cout << "↓ To change the value of <path> to <string> ↓" << endl;
+        cout << "\t> edit <path> <string>" << endl;
+    cout << "↓ To add a new json object by key <path> with value <string> ↓" << endl;
+        cout << "\t> create <path> <string>" << endl;
+    cout << "↓ To remove an element <path> ↓" << endl;
+        cout << "\t> remove <path>" << endl;
+    cout << "↓ To move an element from its place <from> to the place of another element <to> ↓" << endl;
+        cout << "\t> move <from> <to>" << endl;
+    cout << "↓ To print the file ↓" << endl;
+        cout << "\t> print" << endl;
+    cout << "↓ To exit the program ↓" << endl;
+        cout << "\t> exit" << endl;
+    cout << "↓ To see the available commands again ↓" << endl;
+        cout << "\t> help" << endl;
+    cout << "------------------------------------------------------" << endl;
+
+}
+
+
+
+
+
+
+
+
+
