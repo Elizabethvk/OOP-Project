@@ -1,0 +1,12 @@
+{
+    "firstName": "Liz",
+    "lastName": "SampleName",
+    "gender": "woman",
+    "age": 20,
+    "address": {
+        "streetAddress": "123",
+        "city": "Varna",
+        "state": "Dobrich",
+        "postalCode": "64209"
+    }
+}

@@ -1,0 +1,5 @@
+Linux:
+g++ -o JSONParser.out main.cpp JSONStruct/*.cpp JSONCheck/*.cpp Interaction.cpp Commands/*.cpp ControlVariables/*.cpp
+
+Windows:
+g++ -o JSONParser.exe main.cpp JSONStruct/*.cpp JSONCheck/*.cpp Interaction.cpp Commands/*.cpp ControlVariables/*.cpp

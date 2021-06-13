@@ -25,9 +25,18 @@ private:
     //! Function for running user's command of choice
     void runCommand(const string& command, vector<string> arguments);
 
+    //! Function for converting first word in string to lowercase word
+    void toLower(string& command);
+
+    //! Function to add all commands to userCommands
+    void loadCommands();
+    
 public:
     //! Constructor which makes unique ptrs to the commands
     Interaction();
+
+    //! Constructor that takes command line argument
+    Interaction(const string& path);
 
     //! A function accepting user's commands
     void start();

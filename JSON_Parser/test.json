@@ -1,0 +1,8 @@
+ {
+    "Pet" : "Kitty",
+    "Name" : "Lizzy",
+    "IsCute" : true,
+    "Age" : 10,
+    "Favourites" : [ "tuna", "chicken"],
+    "Toy" : "The dog"
+}

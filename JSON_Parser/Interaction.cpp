@@ -13,6 +13,17 @@
 #include "Commands/CommandHelp.hpp"
 #include "Commands/CommandExit.hpp"
 
+Interaction::Interaction(const string& path) {
+    loadCommands();
+    getCommand("help");
+    try {
+        getCommand("open " + path);
+    }
+    catch (const std::exception& e) {
+        cout<<e.what()<<endl;
+    }
+}
+
 
 void Interaction::getCommand(const string& command) {
     string whichCommand, commandArgs;
@@ -48,8 +59,7 @@ void Interaction::runCommand(const string& command, vector<string> arguments) {
     }
 }
 
-
-Interaction::Interaction() {
+void Interaction::loadCommands() {
     userCommands.push_back(std::make_unique<CommandFileOpen>());
     userCommands.push_back(std::make_unique<CommandValidate>());
     userCommands.push_back(std::make_unique<CommandPrint>());
@@ -62,7 +72,22 @@ Interaction::Interaction() {
     userCommands.push_back(std::make_unique<CommandSaveAs>());
     userCommands.push_back(std::make_unique<CommandHelp>());
     userCommands.push_back(std::make_unique<CommandExit>());
+}
 
+Interaction::Interaction() {
+    loadCommands();
+    getCommand("help");
+    
+}
+
+void Interaction::toLower(string& command) {
+    unsigned i = 0;
+    while (i < command.size() && command[i]!=' ') {
+        if (command[i] >= 'A' && command[i]<='Z') {
+            command[i] -= 'A'-'a';
+        }
+        i++;
+    }
 }
 
 void Interaction::start() {
@@ -71,6 +96,7 @@ void Interaction::start() {
     while (true) {
         cout << "> ";
         getline (cin, userCommand);
+        toLower(userCommand);
         getCommand(userCommand);
     }
 }
