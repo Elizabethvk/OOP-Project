@@ -28,7 +28,7 @@ public:
     virtual ~ICommand() = default;
 
     //! Running the command from here
-    virtual void runCommand( JsonCheck& userFile);
+    virtual void runCommand( JsonCheck& userFile) {};
     
     //! Setting the arguments of the program
     void setArgs(vector<string>& args);

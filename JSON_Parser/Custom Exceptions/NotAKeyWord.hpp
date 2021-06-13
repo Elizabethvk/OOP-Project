@@ -1,3 +1,9 @@
+/**
+ * \brief A custom exception class throwing when not recognised keywords
+ * \author Elizabet Velikova
+ */
+
+
 #ifndef KEYWORD_CUSTOM_EXCEPTION_H
 #define KEYWORD_CUSTOM_EXCEPTION_H
 
