@@ -1,3 +1,9 @@
+/**
+ * \brief Class about JSON Number type
+ * \author Elizabet Velikova
+ */
+
+
 #ifndef JSONNUMBER_H
 #define JSONNUMBER_H
 
@@ -5,29 +11,29 @@
 
 class JsonNumber : public JsonValue {
 private:
-    double number;
+    double number; //!< Variable double
 
 public:
+    //! Default constructor
     JsonNumber();
 
+    //! Constructor with already given value
     explicit JsonNumber(const double& number);
 
+    //! Function getting the type
     Type getType()const;
 
+    //! Changing the value
     void edit(const double& number);
 
+    //! Getter for the double value
     double getJsonNumber() const;
 
+    //! Function which saves to a file
     void save(ofstream& userFile) const; 
 
-    double getNumber() const;
-
-    void keySearch(const string& key) const;
-
-    void printValue() const;
-
+    //! Printing the value
     void print() const;
-
 
 };
 

@@ -1,3 +1,8 @@
+/**
+ * \brief Class Array holding a key and multiple values
+ * \author Elizabet Velikova
+ */
+
 #ifndef JSONARRAY_H
 #define JSONARRAY_H
 
@@ -7,30 +12,31 @@
 
 class JsonArray : public JsonValue {
 private:
-    vector<JsonValue*> values;
+    static int openBracketsCounterArr; //!< Variable counting the open brackets
+
+    vector<JsonValue*> values; //!< Vector that holds key's values
 
 public:
+    //! Default constructor
     JsonArray();
     
+    //! Constructor with already given values
     explicit JsonArray(const vector<JsonValue*>& values);
     
-    vector<JsonValue*> getValues() const;
-
+    //! Function getting the type
     Type getType() const;
 
+    //! Changing specific value
     void edit(const int& valueNrconst, JsonValue* value); 
     
-    // void edit(const int& valueNrconst, JsonValue* value); 
+    //! Changing a value of the key
+    void editValue(const string& newValue);
 
-    void save(ofstream& userFile) ; 
+    //! Function which saves to a file
+    void save(ofstream& userFile) const; 
 
-    void keySearch(const string& key) const;
-
-    void printArrElements() const;
-
-    void printValue(std::ostream& out);
-
-    void print();
+    //! Printing the value
+    void print() const;
 };
 
 #endif

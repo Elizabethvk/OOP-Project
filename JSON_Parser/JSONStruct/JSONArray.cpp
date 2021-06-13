@@ -1,9 +1,12 @@
 #include "JSONArray.hpp"
 
+int JsonArray::openBracketsCounterArr = 0;
+
 JsonArray::JsonArray() 
 {
     type = JSONARRAY;
 }
+
 
 JsonArray::JsonArray(const vector<JsonValue*>& values) 
     : values(values)
@@ -11,93 +14,72 @@ JsonArray::JsonArray(const vector<JsonValue*>& values)
     type = JSONARRAY;
 }
 
-vector<JsonValue*> JsonArray::getValues() const {
-    return values;
-}
-
-
 Type JsonArray::getType() const {
     return type;
 }
 
 void JsonArray::edit(const int& valueNr, JsonValue* value) {
+    bool isFound = false;
+
     unsigned int sizeArr = values.size();
     for (unsigned int i = 0; i < sizeArr; ++i) {
         if (i == valueNr) {
             values[i] = value;
+            isFound = true;
         }
+    }
+
+    if (!isFound) {
+        throw std::runtime_error("Couldn't find the desired value!");
     }
 } 
 
-void JsonArray::save(ofstream& userFile) {
-    // printValue(userFile);
 
-    userFile << "[ ";
+void JsonArray::save(ofstream& userFile) const {
+    userFile << "[" << endl;
+
+    ++openBracketsCounterArr;
 
     unsigned int sizeArr = values.size();
     for (unsigned int i = 0; i < sizeArr; ++i) {
         values[i]->save(userFile);
-        if (i <= values.size()-2) {
+
+        if (i <= sizeArr-2) {
             userFile << ", ";
         }
     }
 
+    --openBracketsCounterArr;
 
-    // printArrElements();
-
-    userFile << " ]";
-} //TODO fix print const n stuff
-
-void JsonArray::keySearch(const string& key) const {
-
-}
-
-void JsonArray::printArrElements() const {
-    unsigned int sizeArr = values.size();
-    for (unsigned int i = 0; i < sizeArr; ++i) {
-        values[i]->printValue();
-        if (i <= values.size()-2) {
-            cout << ", ";
-        }
+    if (openBracketsCounterArr != 0) {
+        userFile << " ]," << endl;
+    }
+    else {
+        userFile << " ]";
     }
 }
 
-void JsonArray::printValue(std::ostream& out) {
-    out << "[ ";
 
-    unsigned int sizeArr = values.size();
-    for (unsigned int i = 0; i < sizeArr; ++i) {
-        values[i]->save(out);
-        if (i <= values.size()-2) {
-            out << ", ";
-        }
-    }
-
-
-    // printArrElements();
-
-    out << " ]";
-    // cout << endl;
-
-    // vector<JsonValue*>::iterator itValues;
-    // for (itValues = values.begin(); itValues < values.size(), ++itValues) {
-    // }
-
-}
-
-void JsonArray::print() {
-    // printValue(cout);
+void JsonArray::print() const{
     cout << "[" << endl;
+
+    ++openBracketsCounterArr;
+
     unsigned int sizeArr = values.size();
     for (unsigned int i = 0; i < sizeArr; ++i) {
         values[i]->print();
+
         if (i <= sizeArr-2) {
             cout << ", ";
         }
     }
 
+    --openBracketsCounterArr;
 
-    // // printArrElements();
-
-    cout << "]" << endl;
+    if (openBracketsCounterArr != 0) {
+        cout << " ]," << endl;
+    }
+    else {
+        cout << " ]";
+    }
 }

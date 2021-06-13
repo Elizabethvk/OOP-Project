@@ -1,3 +1,8 @@
+/**
+ * \brief A Class
+ * \author Elizabet Velikova
+ */
+
 #ifndef ICOMMAND_H
 #define ICOMMAND_H
 

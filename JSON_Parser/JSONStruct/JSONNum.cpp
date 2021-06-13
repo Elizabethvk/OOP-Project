@@ -1,8 +1,9 @@
 #include "JSONNum.hpp"
 
-JsonNumber::JsonNumber() {
+JsonNumber::JsonNumber() 
+    : number(0)
+{
     type = JSONNUMBER;
-    number = 0;
 }
 
 JsonNumber::JsonNumber(const double& number) 
@@ -27,20 +28,6 @@ void JsonNumber::save(ofstream& userFile) const {
     userFile << number;
 }
 
-double JsonNumber::getNumber() const {
-    return number;
-}
-
-void JsonNumber::keySearch(const string& key) const {
-    printValue();
-}
-
-void JsonNumber::printValue() const {
-    cout << number;
-}
-
 void JsonNumber::print() const {
     cout << number;
-    // printValue();
-    // cout << ", " << endl;
 }
