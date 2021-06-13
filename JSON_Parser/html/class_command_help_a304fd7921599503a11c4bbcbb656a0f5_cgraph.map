@@ -1,0 +1,4 @@
+<map id="CommandHelp::runCommand" name="CommandHelp::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,5,197,32"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a4688e59ece07313ec5a9b15ad54e6b93" title="Function printing the menu." alt="" coords="245,5,364,32"/>
+</map>

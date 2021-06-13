@@ -1,0 +1,8 @@
+<map id="JsonValue" name="JsonValue">
+<area shape="rect" id="node1" title=" " alt="" coords="255,5,410,200"/>
+<area shape="rect" id="node2" href="$class_json_array.html" title="Class Array holding a key and multiple values." alt="" coords="5,285,105,450"/>
+<area shape="rect" id="node3" href="$class_json_bool.html" title="Class for Bool JSON type." alt="" coords="129,285,243,450"/>
+<area shape="rect" id="node4" href="$class_json_number.html" title="Class about JSON Number type." alt="" coords="267,285,399,450"/>
+<area shape="rect" id="node5" href="$class_json_object.html" title=" " alt="" coords="423,248,594,487"/>
+<area shape="rect" id="node6" href="$class_json_string.html" title=" " alt="" coords="618,285,773,450"/>
+</map>

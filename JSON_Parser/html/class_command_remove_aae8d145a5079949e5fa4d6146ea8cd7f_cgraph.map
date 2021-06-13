@@ -1,0 +1,7 @@
+<map id="CommandRemove::runCommand" name="CommandRemove::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,31,217,57"/>
+<area shape="rect" id="node2" href="$class_json_check.html#ae778b3e50bf8493220cb673913652b50" title="The remove by path and key function." alt="" coords="265,31,444,57"/>
+<area shape="rect" id="node3" href="$class_json_object.html#a2a54a45d29737daf839a733f29a3f34c" title="Function for searching by key." alt="" coords="501,5,658,32"/>
+<area shape="rect" id="node5" href="$class_json_object.html#aa233c099f8ee052f3517736ffe32d5c0" title="Function to remove a value by given key." alt="" coords="492,56,667,83"/>
+<area shape="rect" id="node4" href="$class_json_object.html#a26f577e3f99074f3d92749011090feae" title="Function getting the type." alt="" coords="715,5,856,32"/>
+</map>

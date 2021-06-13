@@ -1,0 +1,4 @@
+<map id="CommandClose::runCommand" name="CommandClose::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,5,204,32"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a17cd63226b72ca3173ba667a450738b5" title="The close file function." alt="" coords="252,5,399,32"/>
+</map>

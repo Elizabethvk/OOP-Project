@@ -1,0 +1,11 @@
+<map id="JsonObject::getType" name="JsonObject::getType">
+<area shape="rect" id="node1" title="Function getting the type." alt="" coords="700,31,841,57"/>
+<area shape="rect" id="node2" href="$class_json_object.html#aba094e0810df15cf1276c9653e7b8c7b" title=" " alt="" coords="492,5,652,32"/>
+<area shape="rect" id="node5" href="$class_json_object.html#a2a54a45d29737daf839a733f29a3f34c" title="Function for searching by key." alt="" coords="493,56,651,83"/>
+<area shape="rect" id="node3" href="$class_json_check.html#a49da5f47047d4839eb8dde8fa8a467ff" title="The edit file function." alt="" coords="297,5,412,32"/>
+<area shape="rect" id="node4" href="$class_command_edit.html#a89f276822ebb4a418e384fb34a224e89" title="Running the command from here." alt="" coords="17,5,206,32"/>
+<area shape="rect" id="node6" href="$class_json_check.html#ae778b3e50bf8493220cb673913652b50" title="The remove by path and key function." alt="" coords="265,56,444,83"/>
+<area shape="rect" id="node8" href="$class_json_check.html#a1f69ef67e2ed8e3aa14fa5d6f7eaa12b" title="The search in file function." alt="" coords="273,107,437,133"/>
+<area shape="rect" id="node7" href="$class_command_remove.html#aae8d145a5079949e5fa4d6146ea8cd7f" title="Running the command from here." alt="" coords="5,56,217,83"/>
+<area shape="rect" id="node9" href="$class_command_search.html#acf024dbfcfcd0a5f68a1e0ba5be720b1" title="Running the command from here" alt="" coords="8,107,215,133"/>
+</map>

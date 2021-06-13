@@ -1,0 +1,6 @@
+<map id="JsonCheck::removeByPath" name="JsonCheck::removeByPath">
+<area shape="rect" id="node1" title="The remove by path and key function." alt="" coords="5,31,184,57"/>
+<area shape="rect" id="node2" href="$class_json_object.html#a2a54a45d29737daf839a733f29a3f34c" title="Function for searching by key." alt="" coords="241,5,398,32"/>
+<area shape="rect" id="node4" href="$class_json_object.html#aa233c099f8ee052f3517736ffe32d5c0" title="Function to remove a value by given key." alt="" coords="232,56,407,83"/>
+<area shape="rect" id="node3" href="$class_json_object.html#a26f577e3f99074f3d92749011090feae" title="Function getting the type." alt="" coords="455,5,596,32"/>
+</map>

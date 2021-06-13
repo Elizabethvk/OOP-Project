@@ -1,0 +1,6 @@
+<map id="CommandSearch::runCommand" name="CommandSearch::runCommand">
+<area shape="rect" id="node1" title="Running the command from here" alt="" coords="5,5,212,32"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a1f69ef67e2ed8e3aa14fa5d6f7eaa12b" title="The search in file function." alt="" coords="260,5,424,32"/>
+<area shape="rect" id="node3" href="$class_json_object.html#a2a54a45d29737daf839a733f29a3f34c" title="Function for searching by key." alt="" coords="472,5,629,32"/>
+<area shape="rect" id="node4" href="$class_json_object.html#a26f577e3f99074f3d92749011090feae" title="Function getting the type." alt="" coords="677,5,819,32"/>
+</map>

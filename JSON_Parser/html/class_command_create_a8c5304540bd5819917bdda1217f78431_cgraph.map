@@ -1,0 +1,7 @@
+<map id="CommandCreate::runCommand" name="CommandCreate::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,56,209,83"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a0cf7706499e6300d1648ed267e701371" title="The create new key with value in file function." alt="" coords="257,56,388,83"/>
+<area shape="rect" id="node3" href="$class_json_value.html#a49e709b6b364e1c6d65561efff1f56be" title="Function getter &#45; type." alt="" coords="461,5,597,32"/>
+<area shape="rect" id="node4" href="$class_json_object.html#a783da014579b15b5d0ca37b82cb5f8f6" title="Function getting the value by given key." alt="" coords="436,56,621,83"/>
+<area shape="rect" id="node5" href="$class_json_object.html#a1080888324e859b192e717df3f8a7dd5" title="Function for inserting new value in the object." alt="" coords="436,107,621,133"/>
+</map>

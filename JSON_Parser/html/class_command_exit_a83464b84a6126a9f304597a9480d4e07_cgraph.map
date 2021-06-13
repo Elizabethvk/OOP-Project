@@ -1,0 +1,7 @@
+<map id="CommandExit::runCommand" name="CommandExit::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,31,195,57"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a69661ca7fd801d4e033a340bbd270d10" title="The exiting function." alt="" coords="243,31,441,57"/>
+<area shape="rect" id="node3" href="$class_json_check.html#adf0645dccb44d250bf03b48667964ac5" title="The save as file function." alt="" coords="489,5,647,32"/>
+<area shape="rect" id="node5" href="$class_json_check.html#a88343a51536214725bf0cdc37e843875" title="The save file function." alt="" coords="497,56,639,83"/>
+<area shape="rect" id="node4" href="$class_json_object.html#ae9b6286de77ed9fde41d2dce2e982cbe" title="Function which saves to a file." alt="" coords="695,31,816,57"/>
+</map>

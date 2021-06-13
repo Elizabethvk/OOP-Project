@@ -1,0 +1,6 @@
+<map id="CommandEdit::runCommand" name="CommandEdit::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,5,195,32"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a49da5f47047d4839eb8dde8fa8a467ff" title="The edit file function." alt="" coords="243,5,357,32"/>
+<area shape="rect" id="node3" href="$class_json_object.html#aba094e0810df15cf1276c9653e7b8c7b" title=" " alt="" coords="405,5,565,32"/>
+<area shape="rect" id="node4" href="$class_json_object.html#a26f577e3f99074f3d92749011090feae" title="Function getting the type." alt="" coords="613,5,755,32"/>
+</map>

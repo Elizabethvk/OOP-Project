@@ -1,0 +1,5 @@
+<map id="CommandSaveAs::runCommand" name="CommandSaveAs::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,5,216,32"/>
+<area shape="rect" id="node2" href="$class_json_check.html#adf0645dccb44d250bf03b48667964ac5" title="The save as file function." alt="" coords="264,5,421,32"/>
+<area shape="rect" id="node3" href="$class_json_object.html#ae9b6286de77ed9fde41d2dce2e982cbe" title="Function which saves to a file." alt="" coords="469,5,591,32"/>
+</map>

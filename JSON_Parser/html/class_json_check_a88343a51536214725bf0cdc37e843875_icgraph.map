@@ -1,0 +1,6 @@
+<map id="JsonCheck::saveFile" name="JsonCheck::saveFile">
+<area shape="rect" id="node1" title="The save file function." alt="" coords="489,31,631,57"/>
+<area shape="rect" id="node2" href="$class_command_save.html#a356e38c2d6066e1369d0b11dfc1256de" title="Running the command from here." alt="" coords="245,5,439,32"/>
+<area shape="rect" id="node3" href="$class_json_check.html#a69661ca7fd801d4e033a340bbd270d10" title="The exiting function." alt="" coords="243,56,441,83"/>
+<area shape="rect" id="node4" href="$class_command_exit.html#a83464b84a6126a9f304597a9480d4e07" title="Running the command from here." alt="" coords="5,56,195,83"/>
+</map>

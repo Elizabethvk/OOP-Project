@@ -1,0 +1,4 @@
+<map id="CommandHelp" name="CommandHelp">
+<area shape="rect" id="node1" title="A Class controlling the Help command." alt="" coords="5,219,132,311"/>
+<area shape="rect" id="node2" href="$class_i_command.html" title=" " alt="" coords="9,5,128,171"/>
+</map>

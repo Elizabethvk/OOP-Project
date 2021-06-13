@@ -1,0 +1,5 @@
+<map id="CommandPrint::runCommand" name="CommandPrint::runCommand">
+<area shape="rect" id="node1" title="Running the command from here." alt="" coords="5,5,199,32"/>
+<area shape="rect" id="node2" href="$class_json_check.html#a07f53661cbcfd63ba9994c69efc04f02" title="The printing file function." alt="" coords="247,5,365,32"/>
+<area shape="rect" id="node3" href="$class_json_object.html#a6be8e63aef151bc23bd498f4f289fcfd" title="Printing the value." alt="" coords="413,5,533,32"/>
+</map>
