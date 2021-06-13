@@ -12,6 +12,7 @@
 #include "../Custom Exceptions/NotAValidArrayClose.hpp"
 #include "../Custom Exceptions/NotAKeyWord.hpp"
 #include "../Custom Exceptions/NotAValidValue.hpp"
+#include "../Custom Exceptions/Exit.hpp"
 
 #include "../ControlVariables/ControlVariables.hpp"
 

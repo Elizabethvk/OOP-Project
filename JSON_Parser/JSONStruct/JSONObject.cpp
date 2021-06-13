@@ -118,7 +118,7 @@ void JsonObject::save(ofstream& userFile) const {
     for (unsigned int i = 0; i < sizeVect; ++i ) {
         userFile << addSpace(SPACE_TO_PRINT);
 
-        userFile << " \"" << keys[i] << "\": \" ";
+        userFile << " \"" << keys[i] << "\": ";
 
         values[i]->save(userFile);
 
@@ -130,12 +130,13 @@ void JsonObject::save(ofstream& userFile) const {
     --openBracketsCounter;
 
     if (openBracketsCounter != 0) {
-        cout << endl;
-        cout << addSpace(SPACE_TO_PRINT);
-        cout << "}" << endl;
+        userFile << endl;
+        userFile << addSpace(SPACE_TO_PRINT);
+        userFile << "}" << endl;
     }
     else {
-        cout << "}" << endl;
+        userFile << endl;
+        userFile << "}" << endl;
     }
 }
 
@@ -166,6 +167,6 @@ void JsonObject::print() const {
         cout << "}" << endl;
     }
     else {
-        cout << "}" << endl;
+        cout <<endl<< "}" << endl;
     }
 }

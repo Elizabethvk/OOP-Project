@@ -112,13 +112,16 @@ double JsonCheck::getNumber (stringstream& fileStream, char& ch) const {
             // throw std::runtime_error("There must be ',' at the end!");
         }
         else {
+            if (ch == '}') {
+                break;
+            }
             ch = fileStream.get();
         }
 
     } while (isItDigit(ch) || ch == '.' || ch == '0'); // TODO == '0'???
 
 
-    ch = fileStream.get();
+    //ch = fileStream.get();
 
     
     if (ch == 'e' || ch == 'E') {
@@ -196,7 +199,7 @@ double JsonCheck::getNumberE (stringstream& fileStream, char& ch) const {
 
 
 void JsonCheck::checkAnswer(int& answer) {
-    while (answer == 1 || answer == 2 || !cin) {
+    while (answer != 1 && answer != 2 || !cin) {
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         cout <<  "Choose an option between - 1 & 2" << endl;
@@ -404,6 +407,7 @@ JsonValue* JsonCheck::inputValue(stringstream& fileStream) const {
             valueOfKey = inputNumber(fileStream );
         }
         else {
+            
             // throw std::runtime_error("Unknown value!");
             throw InvalidValue();
         }
@@ -437,9 +441,9 @@ JsonObject* JsonCheck::inputObject (stringstream& fileStream) const {
         
         do {
             inputWhitespace(fileStream);
-
+           
             key = inputString(fileStream);
-
+            cout << "442 " << key << endl;
             inputWhitespace(fileStream);
 
             checkSymbol = fileStream.get();
@@ -449,11 +453,14 @@ JsonObject* JsonCheck::inputObject (stringstream& fileStream) const {
             }
 
             checkSymbol = fileStream.get();
-
+            cout << "452 " << checkSymbol << endl;
             userValues.push_back(inputValue(fileStream));
-
+           // (*inputValue(fileStream)).print();
+            (*userValues.back()).print();
+            std::cout << endl;
             userKeys.push_back(key);
             checkSymbol = fileStream.get();
+            cout << "457 " << checkSymbol << endl;
 
         } while (checkSymbol == ',');
 
@@ -475,7 +482,7 @@ JsonValue* JsonCheck::inputNumber(stringstream& fileStream) const {
     char symbolObjType = fileStream.get();
 
     if (isItDigit(symbolObjType)) {
-        symbolObjType = fileStream.get();
+        //symbolObjType = fileStream.get();
         number = getNumber(fileStream, symbolObjType);
         return new JsonNumber(number);
     }
@@ -495,6 +502,7 @@ JsonValue* JsonCheck::inputNumber(stringstream& fileStream) const {
 }
 
 JsonValue* JsonCheck::inputJson (stringstream& fileStream) const {
+    fileStream.seekg(std::ios::beg);
     inputWhitespace(fileStream);
 
     char checkSymbol = fileStream.peek();
@@ -666,16 +674,16 @@ void JsonCheck::edit(const string& str, stringstream& fileStream) {
         return;
     }
 
-    JsonValue* jsonValue;
+    JsonValue* jsonValue=nullptr;
 
-    try
-    {
-        jsonValue = inputValue(fileStream);
-    }
-    catch(const std::exception& e){
-        cout << "Problem in the format of the VALUE!" << endl;
-        return;
-    }
+    //try
+    //{
+    //    jsonValue = inputValue(fileStream);
+    //}
+    //catch(const std::exception& e){
+    //    cout << "Problem in the format of the VALUE!" << endl;
+    //    return;
+    //}
 
     vector<ControlVariables> variables = parsingCommand(str);
 
@@ -842,7 +850,7 @@ void JsonCheck::saveAsFile(const string& newFileName) {
 
 
 void JsonCheck::terminateFunction() {
-    int answer;
+    int answer = 0;
     cout << "There might be unsaved data!" << endl;
     cout << "If you want to exit without saving it type 1!" << endl;
     cout << "If you want to exit and saving it type 2!" << endl;
@@ -852,7 +860,7 @@ void JsonCheck::terminateFunction() {
     checkAnswer(answer);
 
     if (answer == 1) {
-        exit(0);
+        throw Exit_Program();
     }
     else if (answer == 2) {
         cout << "If you want to save it to the same file write 1, if you want to save it to new file write 2!" << endl;
@@ -863,13 +871,16 @@ void JsonCheck::terminateFunction() {
         checkAnswer(answer);
 
         if (answer == 1) {
+          
             saveFile();
+            throw Exit_Program();
         }
         else if (answer == 2) {
             cout << "Please input the path of the file!" << endl;
             string path;
             getline(cin, path);
             saveAsFile(path);
+            throw Exit_Program();
         }
     }
 }
